@@ -1,7 +1,19 @@
 import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
 import eclipseLogo from "@/assets/eclipse-logo.jpg";
 
-export const Navigation = () => {
+interface NavigationProps {
+  activeTab?: "votes" | "upcoming" | "past" | "oracle";
+}
+
+export const Navigation = ({ activeTab = "votes" }: NavigationProps) => {
+  const getLinkClasses = (tab: string) => {
+    const isActive = activeTab === tab;
+    return isActive
+      ? "text-sm text-foreground font-medium border-b-2 border-amber pb-1 transition-colors"
+      : "text-sm text-muted-foreground hover:text-foreground transition-colors";
+  };
+
   return (
     <header className="flex items-center justify-between px-6 py-4 bg-background border-b border-border">
       <div className="flex items-center gap-3">
@@ -13,16 +25,16 @@ export const Navigation = () => {
       </div>
       
       <nav className="hidden md:flex items-center gap-6">
-        <a href="#votes" className="text-sm text-foreground font-medium border-b-2 border-amber pb-1 transition-colors">
+        <Link to="/" className={getLinkClasses("votes")}>
           Votes
-        </a>
-        <a href="#upcoming" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+        </Link>
+        <Link to="/upcoming-votes" className={getLinkClasses("upcoming")}>
           Upcoming Votes
-        </a>
-        <a href="#past" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+        </Link>
+        <Link to="/past-votes" className={getLinkClasses("past")}>
           Past Votes
-        </a>
-        <a href="#oracle" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+        </Link>
+        <a href="#oracle" className={getLinkClasses("oracle")}>
           Optimistic Oracle
         </a>
       </nav>
