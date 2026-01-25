@@ -1,14 +1,9 @@
-import { X, ExternalLink, Copy, CheckCircle } from "lucide-react";
+import { X, ExternalLink, FileText } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import type { VoteItem } from "./VoteTable";
 import { useState } from "react";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Badge } from "@/components/ui/badge";
 
 interface DetailPanelProps {
   item: VoteItem | null;
@@ -17,15 +12,9 @@ interface DetailPanelProps {
 }
 
 export const DetailPanel = ({ item, isOpen, onClose }: DetailPanelProps) => {
-  const [copied, setCopied] = useState(false);
+  const [activeTab, setActiveTab] = useState("details");
 
   if (!item) return null;
-
-  const handleCopy = () => {
-    navigator.clipboard.writeText(item.title);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
-  };
 
   return (
     <>
@@ -45,8 +34,16 @@ export const DetailPanel = ({ item, isOpen, onClose }: DetailPanelProps) => {
       >
         <div className="p-6">
           {/* Header */}
-          <div className="flex items-center justify-between mb-8">
-            <h2 className="text-xl font-semibold text-foreground">Vote Details</h2>
+          <div className="flex items-start justify-between mb-6">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-lg bg-amber/20 flex items-center justify-center">
+                <span className="text-amber text-lg font-bold">✕</span>
+              </div>
+              <div>
+                <h2 className="text-lg font-semibold text-foreground">{item.title}</h2>
+                <p className="text-sm text-muted-foreground">{item.project}</p>
+              </div>
+            </div>
             <Button 
               variant="ghost" 
               size="icon"
@@ -57,71 +54,99 @@ export const DetailPanel = ({ item, isOpen, onClose }: DetailPanelProps) => {
             </Button>
           </div>
           
-          {/* Project Info */}
-          <div className="flex items-center gap-4 mb-6">
-            <div className="w-12 h-12 rounded-full bg-amber/20 flex items-center justify-center">
-              <span className="text-amber text-xl font-bold">✕</span>
-            </div>
-            <div>
-              <p className="font-semibold text-foreground text-lg">{item.title}</p>
-              <p className="text-sm text-muted-foreground">{item.project} | {item.timestamp}</p>
-            </div>
-          </div>
-          
-          {/* Query */}
-          <div className="mb-6">
-            <label className="text-sm text-muted-foreground mb-2 block">Assertion</label>
-            <div className="bg-secondary rounded-lg p-4 flex items-start justify-between gap-4">
-              <p className="text-foreground text-sm">
-                The data asserted is accurate according to the specified oracle parameters and verification criteria.
-              </p>
-              <Button 
-                variant="ghost" 
-                size="icon"
-                onClick={handleCopy}
-                className="flex-shrink-0 text-muted-foreground hover:text-foreground"
+          {/* Tabs */}
+          <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+            <TabsList className="w-full justify-start bg-transparent border-b border-border rounded-none h-auto p-0 mb-6">
+              <TabsTrigger 
+                value="details" 
+                className="rounded-none border-b-2 border-transparent data-[state=active]:border-foreground data-[state=active]:bg-transparent px-4 py-2"
               >
-                {copied ? <CheckCircle className="w-4 h-4 text-amber" /> : <Copy className="w-4 h-4" />}
-              </Button>
-            </div>
-          </div>
-          
-          {/* Vote Selection */}
-          <div className="mb-6">
-            <label className="text-sm text-muted-foreground mb-2 block">Your Vote</label>
-            <Select>
-              <SelectTrigger className="w-full bg-card border-border h-12">
-                <SelectValue placeholder="Choose answer" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="invalid">Invalid (p1)</SelectItem>
-                <SelectItem value="valid">Valid (p2)</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-          
-          {/* Status */}
-          <div className="mb-8">
-            <label className="text-sm text-muted-foreground mb-2 block">Status</label>
-            <div className="bg-secondary rounded-lg p-4 flex items-center gap-2">
-              <div className="w-2 h-2 rounded-full bg-amber" />
-              <span className="text-foreground">Requires signature</span>
-            </div>
-          </div>
-          
-          {/* Actions */}
-          <div className="space-y-3">
-            <Button className="w-full bg-amber hover:bg-amber/90 text-primary-foreground font-medium h-12 rounded-full">
-              Sign & Commit Vote
-            </Button>
-            <Button 
-              variant="outline" 
-              className="w-full border-border text-foreground hover:bg-secondary h-12 rounded-full"
-            >
-              <ExternalLink className="w-4 h-4 mr-2" />
-              View on Etherscan
-            </Button>
-          </div>
+                Details
+              </TabsTrigger>
+              <TabsTrigger 
+                value="discord-summary" 
+                className="rounded-none border-b-2 border-transparent data-[state=active]:border-foreground data-[state=active]:bg-transparent px-4 py-2"
+              >
+                Discord Summary
+              </TabsTrigger>
+              <TabsTrigger 
+                value="discord-comments" 
+                className="rounded-none border-b-2 border-transparent data-[state=active]:border-foreground data-[state=active]:bg-transparent px-4 py-2"
+              >
+                Discord Comments
+              </TabsTrigger>
+            </TabsList>
+            
+            <TabsContent value="details" className="mt-0">
+              {/* Badges */}
+              <div className="flex flex-wrap gap-2 mb-6">
+                <Badge variant="outline" className="bg-secondary border-border text-foreground">
+                  <span className="mr-1.5 text-amber">◎</span>
+                  Eclipse
+                </Badge>
+                <Badge variant="outline" className="bg-secondary border-border text-foreground">
+                  <span className="mr-1.5">◎</span>
+                  Managed Optimistic Oracle v2
+                </Badge>
+                <Badge variant="outline" className="bg-secondary border-border text-foreground">
+                  YES_OR_NO_QUERY
+                </Badge>
+              </div>
+              
+              {/* Description Header */}
+              <div className="flex items-center justify-between mb-4">
+                <div className="flex items-center gap-2 text-foreground">
+                  <FileText className="w-4 h-4" />
+                  <span className="font-medium">Description</span>
+                </div>
+                <a 
+                  href="#" 
+                  className="flex items-center gap-1.5 text-sm text-amber hover:underline"
+                >
+                  <span className="w-4 h-4 rounded-full bg-amber/20 flex items-center justify-center text-xs">◎</span>
+                  See on {item.project}
+                  <ExternalLink className="w-3 h-3" />
+                </a>
+              </div>
+              
+              {/* Description Content */}
+              <div className="text-foreground text-sm leading-relaxed space-y-4">
+                <p>
+                  This assertion relates to the {item.title} oracle request, submitted on {item.timestamp}.
+                </p>
+                <p>
+                  The data asserted is accurate according to the specified oracle parameters and verification criteria established by the {item.project} protocol.
+                </p>
+                <p>
+                  If the assertion is disputed, this market will remain open until the dispute has been resolved. If no dispute is raised within the challenge period, the assertion will be accepted as valid.
+                </p>
+                <p>
+                  market_id: {item.id}92847 res_data: p1: 0, p2: 1, p3: 0.5. Where p1 corresponds to Invalid, p2 to Valid, p3 to unknown/50-50. Updates made by the question creator via the bulletin board at 0x65070BE91477460D8A7AeEb94ef92fe056C2f2A7 as described by{" "}
+                  <a 
+                    href="https://eclipsescan.xyz" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="text-coral hover:underline break-all"
+                  >
+                    https://eclipsescan.xyz/tx/0xa14f01b115c4913624fc3f508f960f4dea252758e73c28f5f07f8e19d7bca066
+                  </a>
+                  {" "}should be considered.
+                </p>
+              </div>
+            </TabsContent>
+            
+            <TabsContent value="discord-summary" className="mt-0">
+              <div className="text-muted-foreground text-sm">
+                No Discord summary available for this vote.
+              </div>
+            </TabsContent>
+            
+            <TabsContent value="discord-comments" className="mt-0">
+              <div className="text-muted-foreground text-sm">
+                No Discord comments available for this vote.
+              </div>
+            </TabsContent>
+          </Tabs>
         </div>
       </div>
     </>
