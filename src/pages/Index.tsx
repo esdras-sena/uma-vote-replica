@@ -7,7 +7,7 @@ import { VoteTimer } from "@/components/VoteTimer";
 import { VoteTable, VoteItem } from "@/components/VoteTable";
 import { UpcomingVotes, UpcomingVoteItem } from "@/components/UpcomingVotes";
 import { PastVotes, PastVoteItem } from "@/components/PastVotes";
-import { DetailPanel } from "@/components/DetailPanel";
+import { DetailPanel, DetailItem } from "@/components/DetailPanel";
 
 const mockVoteItems: VoteItem[] = [
   {
@@ -111,10 +111,10 @@ const mockPastVotes: PastVoteItem[] = [
 ];
 
 const Index = () => {
-  const [selectedItem, setSelectedItem] = useState<VoteItem | null>(null);
+  const [selectedItem, setSelectedItem] = useState<DetailItem | null>(null);
   const [isPanelOpen, setIsPanelOpen] = useState(false);
 
-  const handleItemClick = (item: VoteItem) => {
+  const handleItemClick = (item: DetailItem) => {
     setSelectedItem(item);
     setIsPanelOpen(true);
   };
@@ -144,7 +144,7 @@ const Index = () => {
         {/* Upcoming Votes Section - Show only 4 most recent */}
         <UpcomingVotes 
           items={mockUpcomingVotes.slice(0, 4)} 
-          onItemClick={(item) => console.log("Upcoming vote clicked:", item)} 
+          onItemClick={handleItemClick} 
         />
         
         {/* Past Votes Section - Show only 4 most recent */}
