@@ -1,8 +1,14 @@
 import { X, ExternalLink, Copy, CheckCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import type { VoteItem } from "./VoteTable";
 import { useState } from "react";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 interface DetailPanelProps {
   item: VoteItem | null;
@@ -16,7 +22,7 @@ export const DetailPanel = ({ item, isOpen, onClose }: DetailPanelProps) => {
   if (!item) return null;
 
   const handleCopy = () => {
-    navigator.clipboard.writeText(item.query);
+    navigator.clipboard.writeText(item.title);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
@@ -25,7 +31,7 @@ export const DetailPanel = ({ item, isOpen, onClose }: DetailPanelProps) => {
     <>
       {/* Backdrop */}
       <div 
-        className={`fixed inset-0 bg-background/80 backdrop-blur-sm z-40 transition-opacity ${
+        className={`fixed inset-0 bg-black/50 z-40 transition-opacity ${
           isOpen ? "opacity-100" : "opacity-0 pointer-events-none"
         }`}
         onClick={onClose}
@@ -40,7 +46,7 @@ export const DetailPanel = ({ item, isOpen, onClose }: DetailPanelProps) => {
         <div className="p-6">
           {/* Header */}
           <div className="flex items-center justify-between mb-8">
-            <h2 className="text-xl font-semibold">Query Details</h2>
+            <h2 className="text-xl font-semibold text-foreground">Vote Details</h2>
             <Button 
               variant="ghost" 
               size="icon"
@@ -51,84 +57,69 @@ export const DetailPanel = ({ item, isOpen, onClose }: DetailPanelProps) => {
             </Button>
           </div>
           
-          {/* Status Badge */}
-          <div className="mb-6">
-            {item.status === "ended" ? (
-              <Badge className="bg-coral/20 text-coral border-0">Challenge Period Ended</Badge>
-            ) : item.status === "pending" ? (
-              <Badge className="bg-amber/20 text-amber border-0">Pending Verification</Badge>
-            ) : (
-              <Badge className="bg-success/20 text-success border-0">Active</Badge>
-            )}
+          {/* Project Info */}
+          <div className="flex items-center gap-4 mb-6">
+            <div className="w-12 h-12 rounded-full bg-teal/20 flex items-center justify-center">
+              <span className="text-teal text-xl font-bold">✕</span>
+            </div>
+            <div>
+              <p className="font-semibold text-foreground text-lg">{item.title}</p>
+              <p className="text-sm text-muted-foreground">{item.project} | {item.timestamp}</p>
+            </div>
           </div>
           
           {/* Query */}
-          <div className="mb-8">
-            <label className="text-sm text-muted-foreground mb-2 block">Query</label>
+          <div className="mb-6">
+            <label className="text-sm text-muted-foreground mb-2 block">Assertion</label>
             <div className="bg-secondary rounded-lg p-4 flex items-start justify-between gap-4">
-              <p className="text-foreground">{item.query}</p>
+              <p className="text-foreground text-sm">
+                The data asserted is accurate according to the specified oracle parameters and verification criteria.
+              </p>
               <Button 
                 variant="ghost" 
                 size="icon"
                 onClick={handleCopy}
                 className="flex-shrink-0 text-muted-foreground hover:text-foreground"
               >
-                {copied ? <CheckCircle className="w-4 h-4 text-success" /> : <Copy className="w-4 h-4" />}
+                {copied ? <CheckCircle className="w-4 h-4 text-teal" /> : <Copy className="w-4 h-4" />}
               </Button>
             </div>
           </div>
           
-          {/* Details Grid */}
-          <div className="space-y-6">
-            <div className="grid grid-cols-2 gap-6">
-              <div>
-                <label className="text-sm text-muted-foreground mb-2 block">Proposal</label>
-                <div className="bg-secondary rounded-lg p-4">
-                  <span className="text-foreground font-medium">{item.proposal}</span>
-                </div>
-              </div>
-              
-              <div>
-                <label className="text-sm text-muted-foreground mb-2 block">Bond Amount</label>
-                <div className="bg-secondary rounded-lg p-4 flex items-center gap-2">
-                  <div className="w-5 h-5 rounded-full bg-amber/20 flex items-center justify-center">
-                    <span className="text-xs text-amber">$</span>
-                  </div>
-                  <span className="text-foreground font-medium">{item.bond} {item.bondToken}</span>
-                </div>
-              </div>
-            </div>
-            
-            <div>
-              <label className="text-sm text-muted-foreground mb-2 block">Timestamp</label>
-              <div className="bg-secondary rounded-lg p-4">
-                <span className="text-foreground">{item.timestamp}</span>
-              </div>
-            </div>
-            
-            <div>
-              <label className="text-sm text-muted-foreground mb-2 block">Challenge Period</label>
-              <div className="bg-secondary rounded-lg p-4">
-                <span className="text-foreground">
-                  {item.status === "ended" ? "Ended" : item.challengePeriodLeft || "N/A"}
-                </span>
-              </div>
+          {/* Vote Selection */}
+          <div className="mb-6">
+            <label className="text-sm text-muted-foreground mb-2 block">Your Vote</label>
+            <Select>
+              <SelectTrigger className="w-full bg-card border-border h-12">
+                <SelectValue placeholder="Choose answer" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="invalid">Invalid (p1)</SelectItem>
+                <SelectItem value="valid">Valid (p2)</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          
+          {/* Status */}
+          <div className="mb-8">
+            <label className="text-sm text-muted-foreground mb-2 block">Status</label>
+            <div className="bg-secondary rounded-lg p-4 flex items-center gap-2">
+              <div className="w-2 h-2 rounded-full bg-coral" />
+              <span className="text-foreground">Requires signature</span>
             </div>
           </div>
           
           {/* Actions */}
-          <div className="mt-8 space-y-3">
-            {item.status === "active" && (
-              <Button className="w-full bg-coral hover:bg-coral/90 text-foreground font-medium h-12">
-                Dispute Proposal
-              </Button>
-            )}
+          <div className="space-y-3">
+            <Button className="w-full bg-coral hover:bg-coral/90 text-white font-medium h-12 rounded-full">
+              Sign & Commit Vote
+            </Button>
             <Button 
               variant="outline" 
-              className="w-full border-border text-foreground hover:bg-secondary h-12"
+              className="w-full border-border text-foreground hover:bg-secondary h-12 rounded-full"
             >
               <ExternalLink className="w-4 h-4 mr-2" />
-              View on Explorer
+              View on Etherscan
             </Button>
           </div>
         </div>
