@@ -141,15 +141,15 @@ const Index = () => {
           <VoteTable items={mockVoteItems} onItemClick={handleItemClick} />
         </div>
         
-        {/* Upcoming Votes Section */}
+        {/* Upcoming Votes Section - Show only 4 most recent */}
         <UpcomingVotes 
-          items={mockUpcomingVotes} 
+          items={mockUpcomingVotes.slice(0, 4)} 
           onItemClick={(item) => console.log("Upcoming vote clicked:", item)} 
         />
         
-        {/* Past Votes Section */}
+        {/* Past Votes Section - Show only 4 most recent */}
         <PastVotes 
-          items={mockPastVotes} 
+          items={mockPastVotes.slice(0, 4)} 
           onItemClick={(item) => console.log("Past vote clicked:", item)} 
         />
       </div>
