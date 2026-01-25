@@ -41,8 +41,8 @@ export const VoteTable = ({ items, onItemClick }: VoteTableProps) => {
             className="grid grid-cols-[1fr_200px_160px_40px] gap-4 px-4 py-4 items-center hover:bg-secondary/50 cursor-pointer transition-colors group"
           >
             <div className="flex items-center gap-4">
-              <div className="w-10 h-10 rounded-full bg-teal/20 flex items-center justify-center">
-                <span className="text-teal text-lg font-bold">✕</span>
+              <div className="w-10 h-10 rounded-full bg-amber/20 flex items-center justify-center">
+                <span className="text-amber text-lg font-bold">✕</span>
               </div>
               <div>
                 <p className="font-medium text-foreground">{item.title}</p>
@@ -51,7 +51,7 @@ export const VoteTable = ({ items, onItemClick }: VoteTableProps) => {
             </div>
             
             <Select>
-              <SelectTrigger className="bg-card border-border">
+              <SelectTrigger className="bg-secondary border-border">
                 <SelectValue placeholder="Choose answer" />
               </SelectTrigger>
               <SelectContent>
@@ -61,11 +61,11 @@ export const VoteTable = ({ items, onItemClick }: VoteTableProps) => {
             </Select>
             
             <div className="flex items-center gap-2">
-              <div className="w-2 h-2 rounded-full bg-coral" />
+              <div className="w-2 h-2 rounded-full bg-amber" />
               <span className="text-sm text-foreground">Requires signature</span>
             </div>
             
-            <ChevronRight className="w-5 h-5 text-coral group-hover:translate-x-1 transition-transform" />
+            <ChevronRight className="w-5 h-5 text-amber group-hover:translate-x-1 transition-transform" />
           </div>
         ))}
       </div>

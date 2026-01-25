@@ -59,8 +59,8 @@ export const DetailPanel = ({ item, isOpen, onClose }: DetailPanelProps) => {
           
           {/* Project Info */}
           <div className="flex items-center gap-4 mb-6">
-            <div className="w-12 h-12 rounded-full bg-teal/20 flex items-center justify-center">
-              <span className="text-teal text-xl font-bold">✕</span>
+            <div className="w-12 h-12 rounded-full bg-amber/20 flex items-center justify-center">
+              <span className="text-amber text-xl font-bold">✕</span>
             </div>
             <div>
               <p className="font-semibold text-foreground text-lg">{item.title}</p>
@@ -81,7 +81,7 @@ export const DetailPanel = ({ item, isOpen, onClose }: DetailPanelProps) => {
                 onClick={handleCopy}
                 className="flex-shrink-0 text-muted-foreground hover:text-foreground"
               >
-                {copied ? <CheckCircle className="w-4 h-4 text-teal" /> : <Copy className="w-4 h-4" />}
+                {copied ? <CheckCircle className="w-4 h-4 text-amber" /> : <Copy className="w-4 h-4" />}
               </Button>
             </div>
           </div>
@@ -104,14 +104,14 @@ export const DetailPanel = ({ item, isOpen, onClose }: DetailPanelProps) => {
           <div className="mb-8">
             <label className="text-sm text-muted-foreground mb-2 block">Status</label>
             <div className="bg-secondary rounded-lg p-4 flex items-center gap-2">
-              <div className="w-2 h-2 rounded-full bg-coral" />
+              <div className="w-2 h-2 rounded-full bg-amber" />
               <span className="text-foreground">Requires signature</span>
             </div>
           </div>
           
           {/* Actions */}
           <div className="space-y-3">
-            <Button className="w-full bg-coral hover:bg-coral/90 text-white font-medium h-12 rounded-full">
+            <Button className="w-full bg-amber hover:bg-amber/90 text-primary-foreground font-medium h-12 rounded-full">
               Sign & Commit Vote
             </Button>
             <Button 

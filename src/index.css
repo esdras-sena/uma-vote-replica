@@ -6,42 +6,44 @@
 
 @layer base {
   :root {
-    --background: 0 0% 96%;
-    --foreground: 0 0% 10%;
+    --background: 0 0% 5%;
+    --foreground: 0 0% 98%;
 
-    --card: 0 0% 100%;
-    --card-foreground: 0 0% 10%;
+    --card: 0 0% 8%;
+    --card-foreground: 0 0% 98%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 10%;
+    --popover: 0 0% 10%;
+    --popover-foreground: 0 0% 98%;
 
-    --primary: 0 0% 15%;
-    --primary-foreground: 0 0% 100%;
+    --primary: 30 100% 50%;
+    --primary-foreground: 0 0% 5%;
 
-    --secondary: 0 0% 92%;
-    --secondary-foreground: 0 0% 10%;
+    --secondary: 0 0% 12%;
+    --secondary-foreground: 0 0% 98%;
 
-    --muted: 0 0% 90%;
-    --muted-foreground: 0 0% 45%;
+    --muted: 0 0% 15%;
+    --muted-foreground: 0 0% 55%;
 
-    --accent: 356 84% 60%;
-    --accent-foreground: 0 0% 100%;
+    --accent: 30 100% 50%;
+    --accent-foreground: 0 0% 5%;
 
     --destructive: 0 84% 60%;
-    --destructive-foreground: 0 0% 100%;
+    --destructive-foreground: 0 0% 98%;
 
-    --border: 0 0% 88%;
-    --input: 0 0% 88%;
-    --ring: 356 84% 60%;
+    --border: 0 0% 18%;
+    --input: 0 0% 15%;
+    --ring: 30 100% 50%;
 
     --radius: 0.5rem;
 
-    /* Custom UMA tokens */
-    --header-bg: 0 0% 12%;
-    --coral: 356 84% 60%;
+    /* Custom Eclipse tokens */
+    --header-bg: 0 0% 8%;
+    --coral: 0 85% 65%;
+    --amber: 30 100% 50%;
     --teal: 168 76% 42%;
     --success: 142 76% 36%;
     --warning: 38 92% 50%;
+    --gradient-hero: linear-gradient(135deg, hsl(30 100% 45% / 0.5) 0%, hsl(40 100% 50% / 0.25) 40%, transparent 70%);
   }
 }
 
@@ -59,5 +61,9 @@
 @layer utilities {
   .header-dark {
     background-color: hsl(var(--header-bg));
+  }
+  
+  .gradient-hero {
+    background: var(--gradient-hero);
   }
 }

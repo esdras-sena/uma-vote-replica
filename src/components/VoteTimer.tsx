@@ -8,7 +8,7 @@ interface VoteTimerProps {
 export const VoteTimer = ({ commitTimeLeft, revealTimeLeft }: VoteTimerProps) => {
   return (
     <div className="flex rounded-lg overflow-hidden border border-border">
-      <div className="flex items-center gap-3 px-5 py-3 bg-coral text-white flex-1">
+      <div className="flex items-center gap-3 px-5 py-3 bg-amber text-primary-foreground flex-1">
         <Clock className="w-5 h-5" />
         <span className="text-sm">
           Time remaining to commit votes: <span className="font-semibold">{commitTimeLeft}</span>
@@ -21,7 +21,7 @@ export const VoteTimer = ({ commitTimeLeft, revealTimeLeft }: VoteTimerProps) =>
             Reveal phase starts in: <span className="font-semibold text-foreground">{revealTimeLeft}</span>
           </span>
         </div>
-        <a href="#" className="text-coral font-medium hover:underline text-sm">
+        <a href="#" className="text-amber font-medium hover:underline text-sm">
           Remind me
         </a>
       </div>
