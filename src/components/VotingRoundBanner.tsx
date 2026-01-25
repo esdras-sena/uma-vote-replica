@@ -19,7 +19,7 @@ export const VotingRoundBanner = ({ timeLeft, onRemindMe }: VotingRoundBannerPro
       
       <button 
         onClick={onRemindMe}
-        className="text-coral hover:text-coral/80 font-medium transition-colors"
+        className="text-amber hover:text-amber/80 font-medium transition-colors"
       >
         Remind me
       </button>
