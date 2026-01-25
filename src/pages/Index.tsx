@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { TopBanner } from "@/components/TopBanner";
 import { Navigation } from "@/components/Navigation";
 import { HeroSection } from "@/components/HeroSection";
 import { HowItWorks } from "@/components/HowItWorks";
@@ -8,6 +7,7 @@ import { VoteTable, VoteItem } from "@/components/VoteTable";
 import { UpcomingVotes, UpcomingVoteItem } from "@/components/UpcomingVotes";
 import { PastVotes, PastVoteItem } from "@/components/PastVotes";
 import { DetailPanel, DetailItem } from "@/components/DetailPanel";
+import { PastVoteDetailPanel } from "@/components/PastVoteDetailPanel";
 
 const mockVoteItems: VoteItem[] = [
   {
@@ -112,15 +112,26 @@ const mockPastVotes: PastVoteItem[] = [
 
 const Index = () => {
   const [selectedItem, setSelectedItem] = useState<DetailItem | null>(null);
+  const [selectedPastItem, setSelectedPastItem] = useState<PastVoteItem | null>(null);
   const [isPanelOpen, setIsPanelOpen] = useState(false);
+  const [isPastPanelOpen, setIsPastPanelOpen] = useState(false);
 
   const handleItemClick = (item: DetailItem) => {
     setSelectedItem(item);
     setIsPanelOpen(true);
   };
 
+  const handlePastItemClick = (item: PastVoteItem) => {
+    setSelectedPastItem(item);
+    setIsPastPanelOpen(true);
+  };
+
   const handleClosePanel = () => {
     setIsPanelOpen(false);
+  };
+
+  const handleClosePastPanel = () => {
+    setIsPastPanelOpen(false);
   };
 
   return (
@@ -150,7 +161,7 @@ const Index = () => {
         {/* Past Votes Section - Show only 4 most recent */}
         <PastVotes 
           items={mockPastVotes.slice(0, 4)} 
-          onItemClick={(item) => console.log("Past vote clicked:", item)} 
+          onItemClick={handlePastItemClick} 
         />
       </div>
       
@@ -158,6 +169,12 @@ const Index = () => {
         item={selectedItem} 
         isOpen={isPanelOpen} 
         onClose={handleClosePanel} 
+      />
+      
+      <PastVoteDetailPanel 
+        item={selectedPastItem} 
+        isOpen={isPastPanelOpen} 
+        onClose={handleClosePastPanel} 
       />
     </div>
   );
