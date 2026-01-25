@@ -1,22 +1,103 @@
 import { ChevronRight, History } from "lucide-react";
+import { Navigation } from "@/components/Navigation";
+import { PastVoteItem } from "@/components/PastVotes";
+import { VotingRoundBanner } from "@/components/VotingRoundBanner";
 import { Badge } from "@/components/ui/badge";
 
-export interface PastVoteItem {
-  id: string;
-  title: string;
-  project: string;
-  timestamp: string;
-  yourVote: string;
-  result: "correct" | "incorrect" | "skipped";
-  reward?: number;
-}
+const mockPastVotes: PastVoteItem[] = [
+  {
+    id: "p1",
+    title: "Across V2 Migration",
+    project: "Across",
+    timestamp: "2026-01-20, 4:30 PM",
+    yourVote: "Valid (p2)",
+    result: "correct",
+    reward: 0.45,
+  },
+  {
+    id: "p2",
+    title: "Polymarket Oracle Update",
+    project: "Polymarket",
+    timestamp: "2026-01-18, 2:15 PM",
+    yourVote: "Invalid (p1)",
+    result: "incorrect",
+  },
+  {
+    id: "p3",
+    title: "Sherlock Coverage Claim",
+    project: "Sherlock",
+    timestamp: "2026-01-15, 11:00 AM",
+    yourVote: "Valid (p2)",
+    result: "correct",
+    reward: 0.32,
+  },
+  {
+    id: "p4",
+    title: "UMBRA Treasury Allocation",
+    project: "UMBRA",
+    timestamp: "2026-01-12, 5:45 PM",
+    yourVote: "-",
+    result: "skipped",
+  },
+  {
+    id: "p5",
+    title: "Optimism Bridge Upgrade",
+    project: "Optimism",
+    timestamp: "2026-01-10, 3:00 PM",
+    yourVote: "Valid (p2)",
+    result: "correct",
+    reward: 0.28,
+  },
+  {
+    id: "p6",
+    title: "Arbitrum DAO Proposal",
+    project: "Arbitrum",
+    timestamp: "2026-01-08, 1:30 PM",
+    yourVote: "Valid (p2)",
+    result: "correct",
+    reward: 0.51,
+  },
+  {
+    id: "p7",
+    title: "Base Protocol Vote",
+    project: "Base",
+    timestamp: "2026-01-05, 10:00 AM",
+    yourVote: "Invalid (p1)",
+    result: "incorrect",
+  },
+];
 
-interface PastVotesProps {
-  items: PastVoteItem[];
-  onItemClick: (item: PastVoteItem) => void;
-}
+const PastVotesPage = () => {
+  return (
+    <div className="min-h-screen bg-background">
+      <Navigation activeTab="past" />
+      
+      <div className="max-w-6xl mx-auto py-8">
+        <div className="px-6 mb-6">
+          <VotingRoundBanner 
+            timeLeft="1 day" 
+            onRemindMe={() => console.log("Remind me clicked")} 
+          />
+        </div>
+        
+        <div className="px-6 mb-6">
+          <h1 className="text-2xl font-bold text-foreground">Past Votes</h1>
+          <p className="text-muted-foreground mt-1">
+            View your complete voting history and rewards.
+          </p>
+        </div>
+        
+        <PastVotesFullList 
+          items={mockPastVotes} 
+          onItemClick={(item) => console.log("Past vote clicked:", item)} 
+        />
+      </div>
+    </div>
+  );
+};
 
-export const PastVotes = ({ items, onItemClick }: PastVotesProps) => {
+// Full list variant without the "View all" link
+const PastVotesFullList = ({ items, onItemClick }: { items: PastVoteItem[], onItemClick: (item: PastVoteItem) => void }) => {
   const getResultBadge = (result: PastVoteItem["result"]) => {
     switch (result) {
       case "correct":
@@ -31,7 +112,6 @@ export const PastVotes = ({ items, onItemClick }: PastVotesProps) => {
   if (items.length === 0) {
     return (
       <div className="px-6 py-8">
-        <h2 className="text-lg font-semibold text-foreground mb-4">Recent past votes:</h2>
         <div className="bg-card border border-border rounded-lg p-8 text-center">
           <History className="w-10 h-10 text-muted-foreground mx-auto mb-3" />
           <p className="text-muted-foreground">No past votes to display</p>
@@ -42,13 +122,6 @@ export const PastVotes = ({ items, onItemClick }: PastVotesProps) => {
 
   return (
     <div className="px-6 py-8">
-      <div className="flex items-center justify-between mb-4">
-        <h2 className="text-lg font-semibold text-foreground">Recent past votes:</h2>
-        <a href="/past-votes" className="text-amber font-medium hover:underline text-sm">
-          View all history
-        </a>
-      </div>
-      
       <div className="bg-card border border-border rounded-lg overflow-hidden">
         {/* Table Header */}
         <div className="grid grid-cols-[1fr_150px_120px_100px_40px] gap-4 px-4 py-3 text-sm text-muted-foreground border-b border-border">
@@ -93,3 +166,5 @@ export const PastVotes = ({ items, onItemClick }: PastVotesProps) => {
     </div>
   );
 };
+
+export default PastVotesPage;
