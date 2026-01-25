@@ -1,11 +1,14 @@
 import { X, ExternalLink, FileText, Link2, SquareCheck, Clock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import type { VoteItem } from "./VoteTable";
+import type { UpcomingVoteItem } from "./UpcomingVotes";
 import { useState } from "react";
 import { Badge } from "@/components/ui/badge";
 
+export type DetailItem = VoteItem | UpcomingVoteItem;
+
 interface DetailPanelProps {
-  item: VoteItem | null;
+  item: DetailItem | null;
   isOpen: boolean;
   onClose: () => void;
 }
@@ -14,6 +17,9 @@ export const DetailPanel = ({ item, isOpen, onClose }: DetailPanelProps) => {
   const [ancillaryView, setAncillaryView] = useState<"decoded" | "raw">("decoded");
 
   if (!item) return null;
+
+  // Get timestamp - handle both types
+  const timestamp = 'timestamp' in item ? item.timestamp : item.scheduledDate;
 
   return (
     <>
@@ -83,7 +89,7 @@ export const DetailPanel = ({ item, isOpen, onClose }: DetailPanelProps) => {
           {/* Description Content */}
           <div className="text-foreground text-sm leading-relaxed space-y-4">
             <p>
-              This assertion relates to the {item.title} oracle request, submitted on {item.timestamp}.
+              This assertion relates to the {item.title} oracle request, submitted on {timestamp}.
             </p>
             <p>
               The data asserted is accurate according to the specified oracle parameters and verification criteria established by the {item.project} protocol.
