@@ -13,6 +13,9 @@ export const Navigation = () => {
       </div>
       
       <nav className="hidden md:flex items-center gap-6">
+        <a href="#votes" className="text-sm text-foreground font-medium border-b-2 border-amber pb-1 transition-colors">
+          Votes
+        </a>
         <a href="#upcoming" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
           Upcoming Votes
         </a>
