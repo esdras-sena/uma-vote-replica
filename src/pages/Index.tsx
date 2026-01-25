@@ -102,8 +102,8 @@ const mockPastVotes: PastVoteItem[] = [
   },
   {
     id: "p4",
-    title: "UMA Treasury Allocation",
-    project: "UMA",
+    title: "UMBRA Treasury Allocation",
+    project: "UMBRA",
     timestamp: "2026-01-12, 5:45 PM",
     yourVote: "-",
     result: "skipped",

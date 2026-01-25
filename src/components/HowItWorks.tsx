@@ -8,8 +8,8 @@ interface Step {
 const steps: Step[] = [
   {
     number: 1,
-    title: "Stake UMA",
-    description: <>You are staking <span className="font-semibold">0</span> of your <span className="font-semibold">0</span> UMA tokens.</>,
+    title: "Stake UMBRA",
+    description: <>You are staking <span className="font-semibold">0</span> of your <span className="font-semibold">0</span> UMBRA tokens.</>,
     action: "Stake/Unstake",
   },
   {
@@ -21,7 +21,7 @@ const steps: Step[] = [
   {
     number: 3,
     title: "Get rewards",
-    description: <>Your unclaimed UMA rewards: <span className="font-semibold">0</span></>,
+    description: <>Your unclaimed UMBRA rewards: <span className="font-semibold">0</span></>,
     action: "Claim",
   },
 ];

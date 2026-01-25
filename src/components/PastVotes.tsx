@@ -82,7 +82,7 @@ export const PastVotes = ({ items, onItemClick }: PastVotesProps) => {
               {getResultBadge(item.result)}
               
               <span className="text-sm text-foreground">
-                {item.reward !== undefined ? `${item.reward} UMA` : "-"}
+                {item.reward !== undefined ? `${item.reward} UMBRA` : "-"}
               </span>
               
               <ChevronRight className="w-5 h-5 text-muted-foreground group-hover:text-amber group-hover:translate-x-1 transition-all" />
