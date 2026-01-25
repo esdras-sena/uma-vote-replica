@@ -81,12 +81,8 @@ export const DetailPanel = ({ item, isOpen, onClose }: DetailPanelProps) => {
               {/* Badges */}
               <div className="flex flex-wrap gap-2 mb-6">
                 <Badge variant="outline" className="bg-secondary border-border text-foreground">
-                  <span className="mr-1.5 text-amber">◎</span>
-                  Eclipse
-                </Badge>
-                <Badge variant="outline" className="bg-secondary border-border text-foreground">
                   <span className="mr-1.5">◎</span>
-                  Managed Optimistic Oracle v2
+                  Optimistic Oracle Managed
                 </Badge>
                 <Badge variant="outline" className="bg-secondary border-border text-foreground">
                   YES_OR_NO_QUERY
