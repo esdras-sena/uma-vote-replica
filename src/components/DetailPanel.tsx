@@ -1,4 +1,4 @@
-import { X, ExternalLink, FileText } from "lucide-react";
+import { X, ExternalLink, FileText, Link2, SquareCheck, Clock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import type { VoteItem } from "./VoteTable";
 import { useState } from "react";
@@ -13,6 +13,7 @@ interface DetailPanelProps {
 
 export const DetailPanel = ({ item, isOpen, onClose }: DetailPanelProps) => {
   const [activeTab, setActiveTab] = useState("details");
+  const [ancillaryView, setAncillaryView] = useState<"decoded" | "raw">("decoded");
 
   if (!item) return null;
 
@@ -128,6 +129,71 @@ export const DetailPanel = ({ item, isOpen, onClose }: DetailPanelProps) => {
                   </a>
                   {" "}should be considered.
                 </p>
+              </div>
+              
+              {/* Ancillary Data Section */}
+              <div className="mt-8 border-t border-border pt-6">
+                <div className="flex items-center gap-2 text-foreground mb-4">
+                  <Link2 className="w-4 h-4 text-coral" />
+                  <span className="font-medium">Ancillary Data</span>
+                </div>
+                <div className="flex gap-4">
+                  <button
+                    onClick={() => setAncillaryView("decoded")}
+                    className={`text-sm ${ancillaryView === "decoded" ? "text-foreground font-medium" : "text-muted-foreground hover:text-foreground"}`}
+                  >
+                    View Decoded
+                  </button>
+                  <button
+                    onClick={() => setAncillaryView("raw")}
+                    className={`text-sm ${ancillaryView === "raw" ? "text-foreground font-medium" : "text-muted-foreground hover:text-foreground"}`}
+                  >
+                    View Raw
+                  </button>
+                </div>
+                {ancillaryView === "decoded" && (
+                  <div className="mt-3 text-sm text-muted-foreground bg-secondary rounded-lg p-3">
+                    Decoded ancillary data will be displayed here.
+                  </div>
+                )}
+                {ancillaryView === "raw" && (
+                  <div className="mt-3 text-sm text-muted-foreground bg-secondary rounded-lg p-3 font-mono break-all">
+                    0x7b226d61726b65745f6964223a22313136333936392...
+                  </div>
+                )}
+              </div>
+              
+              {/* Voting Options Section */}
+              <div className="mt-8 border-t border-border pt-6">
+                <div className="flex items-center gap-2 text-foreground mb-4">
+                  <SquareCheck className="w-4 h-4 text-coral" />
+                  <span className="font-medium">Voting options</span>
+                </div>
+                <div className="space-y-2 text-sm text-foreground">
+                  <p>Under</p>
+                  <p>Over</p>
+                  <p>unknown/50-50</p>
+                  <p>Early request</p>
+                  <p>Custom</p>
+                </div>
+              </div>
+              
+              {/* Proposal Timestamp Section */}
+              <div className="mt-8 border-t border-border pt-6">
+                <div className="flex items-center gap-2 text-foreground mb-4">
+                  <Clock className="w-4 h-4 text-coral" />
+                  <span className="font-medium">Proposal Timestamp</span>
+                </div>
+                <div className="space-y-2 text-sm">
+                  <div className="flex gap-4">
+                    <span className="text-muted-foreground w-12">UTC</span>
+                    <span className="text-foreground">Sat, 24 Jan 2026 15:19:48 GMT</span>
+                  </div>
+                  <div className="flex gap-4">
+                    <span className="text-muted-foreground w-12">UNIX</span>
+                    <span className="text-foreground">1769267988</span>
+                  </div>
+                </div>
               </div>
             </TabsContent>
             
