@@ -34,7 +34,12 @@ export const Navigation = ({ activeTab = "votes" }: NavigationProps) => {
         <Link to="/past-votes" className={getLinkClasses("past")}>
           Past Votes
         </Link>
-        <a href="#oracle" className={getLinkClasses("oracle")}>
+        <a 
+          href="https://eclipse-oracle.lovable.app/" 
+          target="_blank" 
+          rel="noopener noreferrer" 
+          className={getLinkClasses("oracle")}
+        >
           Optimistic Oracle
         </a>
       </nav>
