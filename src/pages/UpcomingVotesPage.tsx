@@ -1,5 +1,6 @@
 import { Navigation } from "@/components/Navigation";
 import { UpcomingVotes, UpcomingVoteItem } from "@/components/UpcomingVotes";
+import { VotingRoundBanner } from "@/components/VotingRoundBanner";
 
 const mockUpcomingVotes: UpcomingVoteItem[] = [
   {
@@ -46,6 +47,13 @@ const UpcomingVotesPage = () => {
       <Navigation activeTab="upcoming" />
       
       <div className="max-w-6xl mx-auto py-8">
+        <div className="px-6 mb-6">
+          <VotingRoundBanner 
+            timeLeft="1 day" 
+            onRemindMe={() => console.log("Remind me clicked")} 
+          />
+        </div>
+        
         <div className="px-6 mb-6">
           <h1 className="text-2xl font-bold text-foreground">Upcoming Votes</h1>
           <p className="text-muted-foreground mt-1">
