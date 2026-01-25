@@ -51,6 +51,7 @@ export default {
           foreground: "hsl(var(--card-foreground))",
         },
         coral: "hsl(var(--coral))",
+        amber: "hsl(var(--amber))",
         teal: "hsl(var(--teal))",
         success: "hsl(var(--success))",
         warning: "hsl(var(--warning))",
