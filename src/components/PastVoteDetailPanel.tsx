@@ -78,18 +78,6 @@ export const PastVoteDetailPanel = ({ item, isOpen, onClose }: PastVoteDetailPan
               >
                 Details
               </TabsTrigger>
-              <TabsTrigger 
-                value="discord-summary" 
-                className="rounded-none border-b-2 border-transparent data-[state=active]:border-foreground data-[state=active]:bg-transparent px-4 py-2"
-              >
-                Discord Summary
-              </TabsTrigger>
-              <TabsTrigger 
-                value="discord-comments" 
-                className="rounded-none border-b-2 border-transparent data-[state=active]:border-foreground data-[state=active]:bg-transparent px-4 py-2"
-              >
-                Discord Comments
-              </TabsTrigger>
             </TabsList>
             
             {/* Result Tab */}
@@ -313,19 +301,6 @@ export const PastVoteDetailPanel = ({ item, isOpen, onClose }: PastVoteDetailPan
               </div>
             </TabsContent>
             
-            {/* Discord Summary Tab */}
-            <TabsContent value="discord-summary" className="mt-0">
-              <div className="text-muted-foreground text-sm">
-                No Discord summary available for this vote.
-              </div>
-            </TabsContent>
-            
-            {/* Discord Comments Tab */}
-            <TabsContent value="discord-comments" className="mt-0">
-              <div className="text-muted-foreground text-sm">
-                No Discord comments available for this vote.
-              </div>
-            </TabsContent>
           </Tabs>
         </div>
       </div>
