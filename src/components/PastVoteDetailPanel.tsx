@@ -1,4 +1,4 @@
-import { X, RotateCcw, FileText, Link2, SquareCheck, Clock, ExternalLink } from "lucide-react";
+import { X, RotateCcw, FileText, Link2, SquareCheck, Clock, ExternalLink, Users, CheckCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import type { PastVoteItem } from "./PastVotes";
 import { useState } from "react";
@@ -141,6 +141,66 @@ export const PastVoteDetailPanel = ({ item, isOpen, onClose }: PastVoteDetailPan
                       </div>
                     </div>
                   ))}
+                </div>
+              </div>
+              
+              {/* Participation Section */}
+              <div className="mt-8">
+                <div className="flex items-center gap-2 text-foreground mb-6">
+                  <Users className="w-4 h-4 text-coral" />
+                  <span className="font-medium">Participation</span>
+                </div>
+                
+                <div className="bg-secondary rounded-lg p-4 space-y-4">
+                  {/* Quorum */}
+                  <div>
+                    <div className="flex items-center justify-between mb-2">
+                      <div className="flex items-center gap-2">
+                        <span className="text-sm text-foreground">Quorum (100%)</span>
+                        <CheckCircle className="w-4 h-4 text-green-500" />
+                      </div>
+                      <span className="text-sm text-foreground">25.300M / 5.000M</span>
+                    </div>
+                    <div className="h-2 bg-coral/30 rounded-full overflow-hidden">
+                      <div className="h-full bg-coral rounded-full" style={{ width: '100%' }} />
+                    </div>
+                  </div>
+                  
+                  {/* Consensus */}
+                  <div>
+                    <div className="flex items-center justify-between mb-2">
+                      <div className="flex items-center gap-2">
+                        <span className="text-sm text-foreground">Consensus (100.000%)</span>
+                        <CheckCircle className="w-4 h-4 text-green-500" />
+                      </div>
+                      <span className="text-sm text-foreground">25.27024174M / 16.90245448M</span>
+                    </div>
+                    <div className="h-2 bg-coral/30 rounded-full overflow-hidden">
+                      <div className="h-full bg-coral rounded-full" style={{ width: '100%' }} />
+                    </div>
+                  </div>
+                  
+                  {/* Stats */}
+                  <div className="pt-2 space-y-3">
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm text-muted-foreground">Unique commit addresses</span>
+                      <span className="text-sm font-semibold text-foreground">100</span>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm text-muted-foreground">Unique reveal addresses</span>
+                      <span className="text-sm font-semibold text-foreground">100</span>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm text-muted-foreground">Total tokens that committed</span>
+                      <span className="text-sm font-semibold text-foreground">25,483,278.68</span>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm text-muted-foreground">Total tokens that revealed</span>
+                      <span className="text-sm font-semibold text-foreground">
+                        <span className="text-coral">99.2%</span> 25,270,550.22
+                      </span>
+                    </div>
+                  </div>
                 </div>
               </div>
             </TabsContent>
