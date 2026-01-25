@@ -125,7 +125,6 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <TopBanner />
       <Navigation />
       <HeroSection />
       
