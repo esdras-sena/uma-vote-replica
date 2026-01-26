@@ -1,4 +1,6 @@
-import type { ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
+import { getStakedAmount, getUmbraBalance } from "@/web3/getStakingInfo";
+import { getApr } from "@/web3/getApr";
 
 interface Step {
   number: number;
@@ -7,28 +9,60 @@ interface Step {
   action: string;
 }
 
-const steps: Step[] = [
-  {
-    number: 1,
-    title: "Stake UMBRA",
-    description: <>You are staking <span className="font-semibold">0</span> of your <span className="font-semibold">0</span> UMBRA tokens.</>,
-    action: "Stake/Unstake",
-  },
-  {
-    number: 2,
-    title: "Vote",
-    description: <>You have voted in <span className="font-semibold">0</span> votes, and are earning <span className="font-semibold">0% APR</span>.</>,
-    action: "Vote history",
-  },
-  {
-    number: 3,
-    title: "Get rewards",
-    description: <>Your unclaimed UMBRA rewards: <span className="font-semibold">0</span></>,
-    action: "Claim",
-  },
-];
+interface HowItWorksProps {
+  userAddress?: string;
+}
 
-export const HowItWorks = () => {
+export const HowItWorks = ({ userAddress }: HowItWorksProps) => {
+  const [stakedAmount, setStakedAmount] = useState<string>("0");
+  const [umbraBalance, setUmbraBalance] = useState<string>("0");
+  const [apr, setApr] = useState<string>("0");
+
+  useEffect(() => {
+    // Fetch APR (doesn't need user address)
+    getApr()
+      .then((value) => {
+        if (value) setApr(value);
+      })
+      .catch((err) => console.error("Failed to fetch APR:", err));
+  }, []);
+
+  useEffect(() => {
+    if (userAddress) {
+      // Fetch staking info when user address is available
+      Promise.all([
+        getStakedAmount(userAddress),
+        getUmbraBalance(userAddress),
+      ])
+        .then(([staked, balance]) => {
+          setStakedAmount(staked);
+          setUmbraBalance(balance);
+        })
+        .catch((err) => console.error("Failed to fetch staking info:", err));
+    }
+  }, [userAddress]);
+
+  const steps: Step[] = [
+    {
+      number: 1,
+      title: "Stake UMBRA",
+      description: <>You are staking <span className="font-semibold">{stakedAmount}</span> of your <span className="font-semibold">{umbraBalance}</span> UMBRA tokens.</>,
+      action: "Stake/Unstake",
+    },
+    {
+      number: 2,
+      title: "Vote",
+      description: <>You have voted in <span className="font-semibold">0</span> votes, and are earning <span className="font-semibold">{apr}% APR</span>.</>,
+      action: "Vote history",
+    },
+    {
+      number: 3,
+      title: "Get rewards",
+      description: <>Your unclaimed UMBRA rewards: <span className="font-semibold">0</span></>,
+      action: "Claim",
+    },
+  ];
+
   return (
     <div className="px-6 py-8 bg-background">
       <h2 className="text-lg font-semibold text-foreground mb-4">How it works:</h2>
