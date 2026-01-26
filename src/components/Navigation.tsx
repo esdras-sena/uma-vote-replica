@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import eclipseLogo from "@/assets/eclipse-logo.jpg";
-import { ConnectButton } from "./ConnectButton";
+import { Button } from "./ui/button";
 
 interface NavigationProps {
   activeTab?: "votes" | "upcoming" | "past" | "oracle";
@@ -45,7 +45,9 @@ export const Navigation = ({ activeTab = "votes" }: NavigationProps) => {
       </nav>
       
       <div className="flex items-center gap-4">
-        <ConnectButton />
+        <Button className="bg-amber hover:bg-amber/90 text-primary-foreground font-medium px-6 rounded-full">
+          Connect wallet
+        </Button>
       </div>
     </header>
   );
