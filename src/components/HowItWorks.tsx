@@ -1,4 +1,5 @@
 import { useEffect, useState, type ReactNode } from "react";
+import { useAccount } from "@starknet-react/core";
 import { getStakedAmount, getUmbraBalance } from "@/web3/getStakingInfo";
 import { getApr } from "@/web3/getApr";
 
@@ -9,11 +10,8 @@ interface Step {
   action: string;
 }
 
-interface HowItWorksProps {
-  userAddress?: string;
-}
-
-export const HowItWorks = ({ userAddress }: HowItWorksProps) => {
+export const HowItWorks = () => {
+  const { address } = useAccount();
   const [stakedAmount, setStakedAmount] = useState<string>("0");
   const [umbraBalance, setUmbraBalance] = useState<string>("0");
   const [apr, setApr] = useState<string>("0");
@@ -28,11 +26,11 @@ export const HowItWorks = ({ userAddress }: HowItWorksProps) => {
   }, []);
 
   useEffect(() => {
-    if (userAddress) {
+    if (address) {
       // Fetch staking info when user address is available
       Promise.all([
-        getStakedAmount(userAddress),
-        getUmbraBalance(userAddress),
+        getStakedAmount(address),
+        getUmbraBalance(address),
       ])
         .then(([staked, balance]) => {
           setStakedAmount(staked);
@@ -40,7 +38,7 @@ export const HowItWorks = ({ userAddress }: HowItWorksProps) => {
         })
         .catch((err) => console.error("Failed to fetch staking info:", err));
     }
-  }, [userAddress]);
+  }, [address]);
 
   const steps: Step[] = [
     {
