@@ -4,6 +4,25 @@ import { loadAbi } from './utils/fetchEvents';
 
 const provider = new RpcProvider({ nodeUrl: getNodeUrl() });
 
+function formatBigIntToDecimal(rawAmount: bigint, decimals: number = 18): string {
+  if (rawAmount === 0n) return "0";
+  
+  const divisor = 10n ** BigInt(decimals);
+  const integerPart = rawAmount / divisor;
+  const fractionalPart = rawAmount % divisor;
+  
+  if (fractionalPart === 0n) {
+    return integerPart.toString();
+  }
+  
+  // Pad fractional part with leading zeros
+  let fractionalStr = fractionalPart.toString().padStart(decimals, '0');
+  // Remove trailing zeros
+  fractionalStr = fractionalStr.replace(/0+$/, '');
+  
+  return `${integerPart}.${fractionalStr}`;
+}
+
 export async function getStakedAmount(userAddress: string): Promise<string> {
   if (!userAddress) return "0";
   
@@ -26,9 +45,7 @@ export async function getStakedAmount(userAddress: string): Promise<string> {
       rawAmount = BigInt(stakedAmount || 0);
     }
     
-    // Use BigInt division
-    const amount = rawAmount / 1000000000000000000n;
-    return amount.toString();
+    return formatBigIntToDecimal(rawAmount);
   } catch (err) {
     console.error("Failed to fetch staked amount:", err);
     return "0";
@@ -59,9 +76,7 @@ export async function getUmbraBalance(userAddress: string): Promise<string> {
       rawBalance = BigInt(balance || 0);
     }
     
-    // Use BigInt division
-    const amount = rawBalance / 1000000000000000000n;
-    return amount.toString();
+    return formatBigIntToDecimal(rawBalance);
   } catch (err) {
     console.error("Failed to fetch UMBRA balance:", err);
     return "0";
