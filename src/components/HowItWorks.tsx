@@ -1,7 +1,9 @@
+import type { ReactNode } from "react";
+
 interface Step {
   number: number;
   title: string;
-  description: React.ReactNode;
+  description: ReactNode;
   action: string;
 }
 
