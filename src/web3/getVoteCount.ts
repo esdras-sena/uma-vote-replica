@@ -1,6 +1,6 @@
 import { RpcProvider, Contract, hash, num } from 'starknet';
 import { getNodeUrl } from "./utils/network";
-import { fetchEvents, getBlockNumberByTimestamp } from './utils/fetchEvents';
+import { getBlockNumberByTimestamp } from './utils/fetchEvents';
 import voteAbi from './abis/vote.json';
 
 function getProvider() {
@@ -40,32 +40,48 @@ export async function getVoteCount(userAddress: string): Promise<number> {
     const fromBlock = await getBlockNumberByTimestamp(hoursAgo48);
     const latestBlock = await provider.getBlockNumber();
     
-    // Build event filter for VoteCommitted
-    // Keys structure: [event_selector, voter, caller, roundId_low, roundId_high, identifier]
+    // VoteCommitted is a nested event in Vote::Event enum, so keys structure is:
+    // [0]: Component hash (skip with [])
+    // [1]: Event selector hash  
+    // [2]: voter (key)
+    // [3]: caller (key)
+    // [4]: roundId low (key, u256)
+    // [5]: roundId high (key, u256)
+    // [6]: identifier (key)
+    
     const eventSelector = num.toHex(hash.starknetKeccak('VoteCommitted'));
     const voterKey = num.toHex(userAddress);
-    
-    // Filter: event_selector, voter filter, any caller, roundId low, roundId high
     const roundIdLow = num.toHex(currentRoundId);
-    const roundIdHigh = num.toHex(0); // u256 high part is 0 for small numbers
+    const roundIdHigh = num.toHex(0);
     
-    const filter = [
-      [eventSelector],  // event selector
-      [voterKey],       // voter (key)
-      [],               // caller (any)
-      [roundIdLow],     // roundId low
-      [roundIdHigh],    // roundId high
+    // Filter: skip component hash, match event selector, match voter, any caller, match roundId
+    const keyFilter = [
+      [],                 // [0] skip component hash
+      [eventSelector],    // [1] event selector
+      [voterKey],         // [2] voter
+      [],                 // [3] caller (any)
+      [roundIdLow],       // [4] roundId low
+      [roundIdHigh],      // [5] roundId high
     ];
     
-    const [events] = await fetchEvents(
-      fromBlock,
-      latestBlock,
-      voteAddr,
-      filter,
-      'eclipse_oracle::data_verification::vote::Vote::VoteCommitted'
-    );
+    let allEvents: any[] = [];
+    let continuationToken: string | undefined = '0';
     
-    return events.length;
+    while (continuationToken) {
+      const eventsRes = await provider.getEvents({
+        address: voteAddr,
+        from_block: { block_number: fromBlock },
+        to_block: { block_number: latestBlock },
+        keys: keyFilter,
+        chunk_size: 1000,
+        continuation_token: continuationToken === '0' ? undefined : continuationToken,
+      });
+      
+      allEvents = allEvents.concat(eventsRes.events);
+      continuationToken = eventsRes.continuation_token;
+    }
+    
+    return allEvents.length;
   } catch (err) {
     console.error("Failed to fetch vote count:", err);
     return 0;
