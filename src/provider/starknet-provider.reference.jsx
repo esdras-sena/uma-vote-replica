@@ -21,16 +21,18 @@ const provider = jsonRpcProvider({
     const envSepolia = import.meta.env.VITE_SEPOLIA_RPC_URL;
     const envMainnet = import.meta.env.VITE_MAINNET_RPC_URL;
     const explicitRpcUrl = import.meta.env.VITE_RPC_URL;
-
+    
     const fallbackMain = "https://rpc.starknet.lava.build:443";
     const fallbackSep = "https://rpc.starknet-testnet.lava.build:443";
-
+    
     if (explicitRpcUrl) {
       return { nodeUrl: explicitRpcUrl };
     }
-
+    
     const isMain = chain.id === mainnet.id;
-    const nodeUrl = isMain ? envMainnet || fallbackMain : envSepolia || fallbackSep;
+    const nodeUrl = isMain
+      ? envMainnet || fallbackMain
+      : envSepolia || fallbackSep;
     return { nodeUrl };
   },
 });
@@ -41,9 +43,7 @@ function getDefaultChainId() {
   if (typeof window !== "undefined") {
     try {
       lsHint = (localStorage.getItem("preferredChain") || "").toLowerCase();
-    } catch {
-      // ignore
-    }
+    } catch {}
   }
   const chainHint = (lsHint || import.meta.env.VITE_CHAIN || "").toLowerCase();
   return chainHint.includes("main") ? mainnet.id : sepolia.id;
@@ -51,7 +51,7 @@ function getDefaultChainId() {
 
 const defaultChainId = getDefaultChainId();
 
-export function StarknetProvider({ children }: { children: React.ReactNode }) {
+export function StarknetProvider({ children }) {
   return (
     <StarknetConfig
       connectors={connectors}
