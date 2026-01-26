@@ -1,6 +1,7 @@
 import { RpcProvider, Contract, hash, num } from 'starknet';
 import { getNodeUrl } from "./utils/network";
-import { loadAbi, getBlockNumberByTimestamp } from './utils/fetchEvents';
+import { fetchEvents, getBlockNumberByTimestamp } from './utils/fetchEvents';
+import voteAbi from './abis/vote.json';
 
 function getProvider() {
   return new RpcProvider({ nodeUrl: getNodeUrl() });
@@ -11,8 +12,7 @@ export async function getCurrentRoundId(): Promise<number> {
   const voteAddr = import.meta.env.VITE_VOTE_CONTRACT || "0x6975fc84224e0f89bc049ac24e0849cb099379487cf3e3d8c38ddafe62eb8e8";
   
   try {
-    const abi = await loadAbi(voteAddr);
-    const voteContract = new Contract({ abi, address: voteAddr, providerOrAccount: provider });
+    const voteContract = new Contract({ abi: voteAbi, address: voteAddr, providerOrAccount: provider });
     const roundId = await voteContract.get_current_round_id();
     return Number(roundId);
   } catch (err) {
@@ -36,47 +36,36 @@ export async function getVoteCount(userAddress: string): Promise<number> {
     const now = Math.floor(Date.now() / 1000);
     const hoursAgo48 = now - (48 * 60 * 60);
     
-    // Get block number for 48 hours ago
+    // Get block numbers
     const fromBlock = await getBlockNumberByTimestamp(hoursAgo48);
     const latestBlock = await provider.getBlockNumber();
     
     // Build event filter for VoteCommitted
-    // Keys: [event_selector, voter, caller, roundId_low, roundId_high, identifier]
+    // Keys structure: [event_selector, voter, caller, roundId_low, roundId_high, identifier]
     const eventSelector = num.toHex(hash.starknetKeccak('VoteCommitted'));
     const voterKey = num.toHex(userAddress);
     
-    // Fetch events with voter filter
-    let allEvents: any[] = [];
-    let continuationToken: string | undefined = undefined;
+    // Filter: event_selector, voter filter, any caller, roundId low, roundId high
+    const roundIdLow = num.toHex(currentRoundId);
+    const roundIdHigh = num.toHex(0); // u256 high part is 0 for small numbers
     
-    do {
-      const eventsList = await provider.getEvents({
-        address: voteAddr,
-        from_block: { block_number: fromBlock },
-        to_block: { block_number: latestBlock },
-        keys: [[eventSelector], [voterKey]],
-        chunk_size: 1000,
-        continuation_token: continuationToken,
-      });
-      
-      continuationToken = eventsList.continuation_token;
-      allEvents = allEvents.concat(eventsList.events);
-    } while (continuationToken !== undefined);
+    const filter = [
+      [eventSelector],  // event selector
+      [voterKey],       // voter (key)
+      [],               // caller (any)
+      [roundIdLow],     // roundId low
+      [roundIdHigh],    // roundId high
+    ];
     
-    // Filter events by current round ID
-    // The roundId is a u256, so it's split into low and high parts in the keys
-    // keys[3] = roundId_low, keys[4] = roundId_high
-    const filteredEvents = allEvents.filter(event => {
-      if (event.keys.length >= 5) {
-        const roundIdLow = BigInt(event.keys[3]);
-        const roundIdHigh = BigInt(event.keys[4]);
-        const eventRoundId = roundIdLow + (roundIdHigh << 128n);
-        return eventRoundId === BigInt(currentRoundId);
-      }
-      return false;
-    });
+    const [events] = await fetchEvents(
+      fromBlock,
+      latestBlock,
+      voteAddr,
+      filter,
+      'eclipse_oracle::data_verification::vote::Vote::VoteCommitted'
+    );
     
-    return filteredEvents.length;
+    return events.length;
   } catch (err) {
     console.error("Failed to fetch vote count:", err);
     return 0;
