@@ -14,8 +14,19 @@ export async function getStakedAmount(userAddress: string): Promise<string> {
     const voteContract = new Contract({ abi, address: voteAddr, providerOrAccount: provider });
     const stakedAmount = await voteContract.voter_stakes(userAddress);
     
-    // Convert from wei (assuming 18 decimals)
-    const amount = Number(stakedAmount) / 1e18;
+    // Handle u256 response (has low/high properties)
+    let rawAmount: bigint;
+    if (typeof stakedAmount === 'object' && stakedAmount !== null) {
+      if (stakedAmount.low !== undefined) {
+        rawAmount = BigInt(stakedAmount.low);
+      } else {
+        rawAmount = BigInt(stakedAmount.toString());
+      }
+    } else {
+      rawAmount = BigInt(stakedAmount || 0);
+    }
+    
+    const amount = Number(rawAmount) / 1e18;
     return amount.toFixed(2);
   } catch (err) {
     console.error("Failed to fetch staked amount:", err);
@@ -33,14 +44,18 @@ export async function getUmbraBalance(userAddress: string): Promise<string> {
     const umbraContract = new Contract({ abi, address: umbraAddr, providerOrAccount: provider });
     const balance = await umbraContract.balanceOf(userAddress);
     
-    // Handle the balance response (may be an object with low/high or direct bigint)
+    // Handle u256 response (has low/high properties)
     let rawBalance: bigint;
-    if (typeof balance === 'object' && balance.balance) {
-      rawBalance = balance.balance.low || balance.balance;
-    } else if (typeof balance === 'object' && balance.low !== undefined) {
-      rawBalance = balance.low;
+    if (typeof balance === 'object' && balance !== null) {
+      if (balance.balance?.low !== undefined) {
+        rawBalance = BigInt(balance.balance.low);
+      } else if (balance.low !== undefined) {
+        rawBalance = BigInt(balance.low);
+      } else {
+        rawBalance = BigInt(balance.toString());
+      }
     } else {
-      rawBalance = BigInt(balance);
+      rawBalance = BigInt(balance || 0);
     }
     
     const amount = Number(rawBalance) / 1e18;
