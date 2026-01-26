@@ -2,6 +2,7 @@ import { useEffect, useState, type ReactNode } from "react";
 import { useAccount } from "@starknet-react/core";
 import { getStakedAmount, getUmbraBalance } from "@/web3/getStakingInfo";
 import { getApr } from "@/web3/getApr";
+import { getVoteCount } from "@/web3/getVoteCount";
 
 interface Step {
   number: number;
@@ -15,6 +16,7 @@ export const HowItWorks = () => {
   const [stakedAmount, setStakedAmount] = useState<string>("0");
   const [umbraBalance, setUmbraBalance] = useState<string>("0");
   const [apr, setApr] = useState<string>("0");
+  const [voteCount, setVoteCount] = useState<number>(0);
 
   useEffect(() => {
     // Fetch APR (doesn't need user address)
@@ -27,14 +29,16 @@ export const HowItWorks = () => {
 
   useEffect(() => {
     if (address) {
-      // Fetch staking info when user address is available
+      // Fetch staking info and vote count when user address is available
       Promise.all([
         getStakedAmount(address),
         getUmbraBalance(address),
+        getVoteCount(address),
       ])
-        .then(([staked, balance]) => {
+        .then(([staked, balance, votes]) => {
           setStakedAmount(staked);
           setUmbraBalance(balance);
+          setVoteCount(votes);
         })
         .catch((err) => console.error("Failed to fetch staking info:", err));
     }
@@ -50,7 +54,7 @@ export const HowItWorks = () => {
     {
       number: 2,
       title: "Vote",
-      description: <>You have voted in <span className="font-semibold">0</span> votes, and are earning <span className="font-semibold">{apr}% APR</span>.</>,
+      description: <>You have voted in <span className="font-semibold">{voteCount}</span> votes, and are earning <span className="font-semibold">{apr}% APR</span>.</>,
       action: "Vote history",
     },
     {
