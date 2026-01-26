@@ -1,15 +1,9 @@
-import { useBalance } from "@starknet-react/core";
-
 interface AccountBalanceProps {
   address: string;
   heading?: boolean;
 }
 
 const AccountBalance = ({ address, heading = true }: AccountBalanceProps) => {
-  const { data: ethBalance, isLoading: ethLoading } = useBalance({
-    address: address as `0x${string}`,
-  });
-
   if (!address) return null;
 
   return (
@@ -23,7 +17,7 @@ const AccountBalance = ({ address, heading = true }: AccountBalanceProps) => {
           <span className="text-sm font-medium">ETH</span>
         </div>
         <span className="text-sm text-muted-foreground">
-          {ethLoading ? "..." : ethBalance?.formatted ? `${Number(ethBalance.formatted).toFixed(4)}` : "0.0000"}
+          —
         </span>
       </div>
     </div>
