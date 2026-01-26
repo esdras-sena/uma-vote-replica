@@ -1,6 +1,6 @@
 import { X, ChevronDown } from "lucide-react";
 import { createPortal } from "react-dom";
-import { useAccount, useConnect, useDisconnect, useNetwork } from "@starknet-react/core";
+import { useAccount, useConnect, useDisconnect, useStarkProfile, useNetwork } from "@starknet-react/core";
 import AddressBar from "./lib/AddressIcon";
 import GenericModal from "./lib/GenericModal";
 import CopyButton from "./lib/CopyButton";
@@ -15,6 +15,8 @@ const UserModal = () => {
   useEffect(() => setMounted(true), []);
   const { chain } = useNetwork();
   const { disconnect } = useDisconnect();
+  const [imageError, setImageError] = useState(false);
+  const { data: starkProfile } = useStarkProfile({ address });
 
   return (
     <GenericModal popoverId="user-popover">
@@ -40,7 +42,7 @@ const UserModal = () => {
                   try { hint = (localStorage.getItem('preferredChain') || '').toLowerCase(); } catch { }
                   if (hint.includes('main')) return 'Starknet';
                   if (hint.includes('sepolia')) return 'Starknet Sepolia';
-                  return chain?.name || 'Network';
+                  return chain?.name || 'Starknet';
                 })()) : 'Network'}
               </span>
             </div>
@@ -58,15 +60,26 @@ const UserModal = () => {
 
           <div className="mt-3 flex items-center gap-3">
             <div className="h-9 w-9 overflow-clip rounded-full md:h-10 md:w-10">
-              <img 
-                src={blo(address as `0x${string}` || "0x0")} 
-                className="mx-auto h-full w-full rounded-full" 
-                alt="address avatar"
-              />
+              {!imageError && starkProfile?.profilePicture ? (
+                <img
+                  src={starkProfile?.profilePicture}
+                  className="w-full rounded-full"
+                  alt="starknet profile"
+                  onError={() => setImageError(true)}
+                />
+              ) : (
+                <img 
+                  src={blo(address as `0x${string}` || "0x0")} 
+                  className="mx-auto h-full w-full rounded-full" 
+                  alt="address avatar"
+                />
+              )}
             </div>
             <CopyButton
-              copyText={address || ""}
-              buttonText={address?.slice(0, 10).concat("...").concat(address?.slice(-5))}
+              copyText={starkProfile?.name || address || ""}
+              buttonText={
+                starkProfile?.name || address?.slice(0, 10).concat("...").concat(address?.slice(-5))
+              }
               className="flex items-center gap-2 text-sm text-card-foreground/90 hover:text-card-foreground"
               iconClassName="text-amber"
             />
