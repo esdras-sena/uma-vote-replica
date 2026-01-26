@@ -1,0 +1,2198 @@
+[
+  {
+    "type": "impl",
+    "name": "Upgradeable",
+    "interface_name": "openzeppelin_upgrades::interface::IUpgradeable"
+  },
+  {
+    "type": "interface",
+    "name": "openzeppelin_upgrades::interface::IUpgradeable",
+    "items": [
+      {
+        "type": "function",
+        "name": "upgrade",
+        "inputs": [
+          {
+            "name": "new_class_hash",
+            "type": "core::starknet::class_hash::ClassHash"
+          }
+        ],
+        "outputs": [],
+        "state_mutability": "external"
+      }
+    ]
+  },
+  {
+    "type": "impl",
+    "name": "Vote",
+    "interface_name": "eclipse_oracle::interfaces::IVote::IVote"
+  },
+  {
+    "type": "struct",
+    "name": "core::byte_array::ByteArray",
+    "members": [
+      {
+        "name": "data",
+        "type": "core::array::Array::<core::bytes_31::bytes31>"
+      },
+      {
+        "name": "pending_word",
+        "type": "core::felt252"
+      },
+      {
+        "name": "pending_word_len",
+        "type": "core::internal::bounded_int::BoundedInt::<0, 30>"
+      }
+    ]
+  },
+  {
+    "type": "struct",
+    "name": "core::integer::u256",
+    "members": [
+      {
+        "name": "low",
+        "type": "core::integer::u128"
+      },
+      {
+        "name": "high",
+        "type": "core::integer::u128"
+      }
+    ]
+  },
+  {
+    "type": "struct",
+    "name": "eclipse_oracle::utils::signed256::Signed256::i256",
+    "members": [
+      {
+        "name": "signal",
+        "type": "core::integer::u8"
+      },
+      {
+        "name": "value",
+        "type": "core::integer::u256"
+      }
+    ]
+  },
+  {
+    "type": "enum",
+    "name": "core::bool",
+    "variants": [
+      {
+        "name": "False",
+        "type": "()"
+      },
+      {
+        "name": "True",
+        "type": "()"
+      }
+    ]
+  },
+  {
+    "type": "struct",
+    "name": "eclipse_oracle::interfaces::IVoteAncillary::PendingRequestAncillaryAugmented",
+    "members": [
+      {
+        "name": "lastVotingRound",
+        "type": "core::integer::u32"
+      },
+      {
+        "name": "isGovernance",
+        "type": "core::bool"
+      },
+      {
+        "name": "time",
+        "type": "core::integer::u64"
+      },
+      {
+        "name": "rollCount",
+        "type": "core::integer::u32"
+      },
+      {
+        "name": "identifier",
+        "type": "core::felt252"
+      },
+      {
+        "name": "ancillaryData",
+        "type": "core::byte_array::ByteArray"
+      }
+    ]
+  },
+  {
+    "type": "enum",
+    "name": "eclipse_oracle::interfaces::IVoteAncillary::Phase",
+    "variants": [
+      {
+        "name": "Commit",
+        "type": "()"
+      },
+      {
+        "name": "Reveal",
+        "type": "()"
+      },
+      {
+        "name": "NUM_PHASES",
+        "type": "()"
+      }
+    ]
+  },
+  {
+    "type": "struct",
+    "name": "eclipse_oracle::interfaces::IVote::SlashingTracker",
+    "members": [
+      {
+        "name": "wrongVoteSlashPerToken",
+        "type": "core::integer::u256"
+      },
+      {
+        "name": "noVoteSlashPerToken",
+        "type": "core::integer::u256"
+      },
+      {
+        "name": "totalSlashed",
+        "type": "core::integer::u256"
+      },
+      {
+        "name": "totalCorrectVotes",
+        "type": "core::integer::u256"
+      },
+      {
+        "name": "lastVotingRound",
+        "type": "core::integer::u32"
+      }
+    ]
+  },
+  {
+    "type": "struct",
+    "name": "eclipse_oracle::interfaces::IVoteAncillary::PendingRequestAncillary",
+    "members": [
+      {
+        "name": "identifier",
+        "type": "core::felt252"
+      },
+      {
+        "name": "time",
+        "type": "core::integer::u64"
+      },
+      {
+        "name": "ancillaryData",
+        "type": "core::byte_array::ByteArray"
+      }
+    ]
+  },
+  {
+    "type": "enum",
+    "name": "eclipse_oracle::interfaces::IVote::RequestStatus",
+    "variants": [
+      {
+        "name": "NotRequested",
+        "type": "()"
+      },
+      {
+        "name": "Active",
+        "type": "()"
+      },
+      {
+        "name": "Resolved",
+        "type": "()"
+      },
+      {
+        "name": "Future",
+        "type": "()"
+      },
+      {
+        "name": "ToDelete",
+        "type": "()"
+      }
+    ]
+  },
+  {
+    "type": "struct",
+    "name": "eclipse_oracle::interfaces::IVote::RequestState",
+    "members": [
+      {
+        "name": "status",
+        "type": "eclipse_oracle::interfaces::IVote::RequestStatus"
+      },
+      {
+        "name": "lastVotingRound",
+        "type": "core::integer::u32"
+      }
+    ]
+  },
+  {
+    "type": "struct",
+    "name": "eclipse_oracle::data_verification::vote::Vote::PriceRequest",
+    "members": [
+      {
+        "name": "lastVotingRound",
+        "type": "core::integer::u256"
+      },
+      {
+        "name": "isGovernance",
+        "type": "core::bool"
+      },
+      {
+        "name": "time",
+        "type": "core::integer::u64"
+      },
+      {
+        "name": "rollCount",
+        "type": "core::integer::u32"
+      },
+      {
+        "name": "identifier",
+        "type": "core::felt252"
+      },
+      {
+        "name": "ancillaryData",
+        "type": "core::byte_array::ByteArray"
+      }
+    ]
+  },
+  {
+    "type": "struct",
+    "name": "eclipse_oracle::data_verification::vote::Vote::Round",
+    "members": [
+      {
+        "name": "slashingLibrary",
+        "type": "core::starknet::contract_address::ContractAddress"
+      },
+      {
+        "name": "minParticipationRequirement",
+        "type": "core::integer::u128"
+      },
+      {
+        "name": "minAgreementRequirement",
+        "type": "core::integer::u128"
+      },
+      {
+        "name": "cumulativeStakeAtRound",
+        "type": "core::integer::u128"
+      },
+      {
+        "name": "numberOfRequestsToVote",
+        "type": "core::integer::u32"
+      }
+    ]
+  },
+  {
+    "type": "enum",
+    "name": "eclipse_oracle::interfaces::IVote::VoteParticipation",
+    "variants": [
+      {
+        "name": "DidNotVote",
+        "type": "()"
+      },
+      {
+        "name": "WrongVote",
+        "type": "()"
+      },
+      {
+        "name": "CorrectVote",
+        "type": "()"
+      }
+    ]
+  },
+  {
+    "type": "interface",
+    "name": "eclipse_oracle::interfaces::IVote::IVote",
+    "items": [
+      {
+        "type": "function",
+        "name": "request_price",
+        "inputs": [
+          {
+            "name": "identifier",
+            "type": "core::felt252"
+          },
+          {
+            "name": "time",
+            "type": "core::integer::u64"
+          },
+          {
+            "name": "ancillary_data",
+            "type": "core::byte_array::ByteArray"
+          }
+        ],
+        "outputs": [],
+        "state_mutability": "external"
+      },
+      {
+        "type": "function",
+        "name": "commit_vote",
+        "inputs": [
+          {
+            "name": "identifier",
+            "type": "core::felt252"
+          },
+          {
+            "name": "time",
+            "type": "core::integer::u64"
+          },
+          {
+            "name": "ancillary_data",
+            "type": "core::byte_array::ByteArray"
+          },
+          {
+            "name": "hash",
+            "type": "core::felt252"
+          }
+        ],
+        "outputs": [],
+        "state_mutability": "external"
+      },
+      {
+        "type": "function",
+        "name": "commit_and_emit_encrypted_vote",
+        "inputs": [
+          {
+            "name": "identifier",
+            "type": "core::felt252"
+          },
+          {
+            "name": "time",
+            "type": "core::integer::u64"
+          },
+          {
+            "name": "ancillary_data",
+            "type": "core::byte_array::ByteArray"
+          },
+          {
+            "name": "hash",
+            "type": "core::felt252"
+          },
+          {
+            "name": "encrypted_vote",
+            "type": "core::byte_array::ByteArray"
+          }
+        ],
+        "outputs": [],
+        "state_mutability": "external"
+      },
+      {
+        "type": "function",
+        "name": "reveal_vote",
+        "inputs": [
+          {
+            "name": "identifier",
+            "type": "core::felt252"
+          },
+          {
+            "name": "time",
+            "type": "core::integer::u64"
+          },
+          {
+            "name": "price",
+            "type": "eclipse_oracle::utils::signed256::Signed256::i256"
+          },
+          {
+            "name": "ancillary_data",
+            "type": "core::byte_array::ByteArray"
+          },
+          {
+            "name": "salt",
+            "type": "eclipse_oracle::utils::signed256::Signed256::i256"
+          }
+        ],
+        "outputs": [],
+        "state_mutability": "external"
+      },
+      {
+        "type": "function",
+        "name": "get_pending_requests",
+        "inputs": [],
+        "outputs": [
+          {
+            "type": "core::array::Array::<eclipse_oracle::interfaces::IVoteAncillary::PendingRequestAncillaryAugmented>"
+          }
+        ],
+        "state_mutability": "view"
+      },
+      {
+        "type": "function",
+        "name": "get_vote_phase",
+        "inputs": [],
+        "outputs": [
+          {
+            "type": "eclipse_oracle::interfaces::IVoteAncillary::Phase"
+          }
+        ],
+        "state_mutability": "view"
+      },
+      {
+        "type": "function",
+        "name": "get_current_round_id",
+        "inputs": [],
+        "outputs": [
+          {
+            "type": "core::integer::u32"
+          }
+        ],
+        "state_mutability": "view"
+      },
+      {
+        "type": "function",
+        "name": "get_round_end_time",
+        "inputs": [
+          {
+            "name": "roundId",
+            "type": "core::integer::u256"
+          }
+        ],
+        "outputs": [
+          {
+            "type": "core::integer::u64"
+          }
+        ],
+        "state_mutability": "view"
+      },
+      {
+        "type": "function",
+        "name": "get_number_of_price_requests",
+        "inputs": [],
+        "outputs": [
+          {
+            "type": "(core::integer::u256, core::integer::u256)"
+          }
+        ],
+        "state_mutability": "view"
+      },
+      {
+        "type": "function",
+        "name": "get_number_of_price_requests_post_update",
+        "inputs": [],
+        "outputs": [
+          {
+            "type": "(core::integer::u256, core::integer::u256)"
+          }
+        ],
+        "state_mutability": "external"
+      },
+      {
+        "type": "function",
+        "name": "process_resolvable_price_requests",
+        "inputs": [],
+        "outputs": [],
+        "state_mutability": "external"
+      },
+      {
+        "type": "function",
+        "name": "process_resolvable_price_requests_range",
+        "inputs": [
+          {
+            "name": "maxTraversals",
+            "type": "core::integer::u64"
+          }
+        ],
+        "outputs": [],
+        "state_mutability": "external"
+      },
+      {
+        "type": "function",
+        "name": "request_slashing_trackers",
+        "inputs": [
+          {
+            "name": "requestIndex",
+            "type": "core::integer::u256"
+          }
+        ],
+        "outputs": [
+          {
+            "type": "eclipse_oracle::interfaces::IVote::SlashingTracker"
+          }
+        ],
+        "state_mutability": "view"
+      },
+      {
+        "type": "function",
+        "name": "retrieve_rewards_on_migrated_voting_contract",
+        "inputs": [
+          {
+            "name": "voter",
+            "type": "core::starknet::contract_address::ContractAddress"
+          },
+          {
+            "name": "roundId",
+            "type": "core::integer::u256"
+          },
+          {
+            "name": "toRetrieve",
+            "type": "core::array::Array::<eclipse_oracle::interfaces::IVoteAncillary::PendingRequestAncillary>"
+          }
+        ],
+        "outputs": [
+          {
+            "type": "core::integer::u256"
+          }
+        ],
+        "state_mutability": "external"
+      },
+      {
+        "type": "function",
+        "name": "set_migrated",
+        "inputs": [
+          {
+            "name": "new_voting_address",
+            "type": "core::starknet::contract_address::ContractAddress"
+          }
+        ],
+        "outputs": [],
+        "state_mutability": "external"
+      },
+      {
+        "type": "function",
+        "name": "set_max_rolls",
+        "inputs": [
+          {
+            "name": "newMaxRoll",
+            "type": "core::integer::u32"
+          }
+        ],
+        "outputs": [],
+        "state_mutability": "external"
+      },
+      {
+        "type": "function",
+        "name": "set_max_requests_per_round",
+        "inputs": [
+          {
+            "name": "newMaxRequestsPerRound",
+            "type": "core::integer::u32"
+          }
+        ],
+        "outputs": [],
+        "state_mutability": "external"
+      },
+      {
+        "type": "function",
+        "name": "set_gat_and_spat",
+        "inputs": [
+          {
+            "name": "newGat",
+            "type": "core::integer::u128"
+          },
+          {
+            "name": "newSpat",
+            "type": "core::integer::u64"
+          }
+        ],
+        "outputs": [],
+        "state_mutability": "external"
+      },
+      {
+        "type": "function",
+        "name": "set_slashing_library",
+        "inputs": [
+          {
+            "name": "newSlashingLibrary",
+            "type": "core::starknet::contract_address::ContractAddress"
+          }
+        ],
+        "outputs": [],
+        "state_mutability": "external"
+      },
+      {
+        "type": "function",
+        "name": "update_trackers_range",
+        "inputs": [
+          {
+            "name": "voter",
+            "type": "core::starknet::contract_address::ContractAddress"
+          },
+          {
+            "name": "maxTraversals",
+            "type": "core::integer::u64"
+          }
+        ],
+        "outputs": [],
+        "state_mutability": "external"
+      },
+      {
+        "type": "function",
+        "name": "update_trackers",
+        "inputs": [
+          {
+            "name": "voter",
+            "type": "core::starknet::contract_address::ContractAddress"
+          }
+        ],
+        "outputs": [],
+        "state_mutability": "external"
+      },
+      {
+        "type": "function",
+        "name": "has_price",
+        "inputs": [
+          {
+            "name": "identifier",
+            "type": "core::felt252"
+          },
+          {
+            "name": "time",
+            "type": "core::integer::u64"
+          },
+          {
+            "name": "ancillary_data",
+            "type": "core::byte_array::ByteArray"
+          }
+        ],
+        "outputs": [
+          {
+            "type": "core::bool"
+          }
+        ],
+        "state_mutability": "view"
+      },
+      {
+        "type": "function",
+        "name": "get_price",
+        "inputs": [
+          {
+            "name": "identifier",
+            "type": "core::felt252"
+          },
+          {
+            "name": "time",
+            "type": "core::integer::u64"
+          },
+          {
+            "name": "ancillary_data",
+            "type": "core::byte_array::ByteArray"
+          }
+        ],
+        "outputs": [
+          {
+            "type": "eclipse_oracle::utils::signed256::Signed256::i256"
+          }
+        ],
+        "state_mutability": "view"
+      },
+      {
+        "type": "function",
+        "name": "get_price_request_statuses",
+        "inputs": [
+          {
+            "name": "requests",
+            "type": "core::array::Array::<eclipse_oracle::interfaces::IVoteAncillary::PendingRequestAncillary>"
+          }
+        ],
+        "outputs": [
+          {
+            "type": "core::array::Array::<eclipse_oracle::interfaces::IVote::RequestState>"
+          }
+        ],
+        "state_mutability": "view"
+      },
+      {
+        "type": "function",
+        "name": "get_price_request_id",
+        "inputs": [
+          {
+            "name": "identifier",
+            "type": "core::felt252"
+          },
+          {
+            "name": "time",
+            "type": "core::integer::u64"
+          },
+          {
+            "name": "ancillaryData",
+            "type": "core::byte_array::ByteArray"
+          }
+        ],
+        "outputs": [
+          {
+            "type": "core::felt252"
+          }
+        ],
+        "state_mutability": "view"
+      },
+      {
+        "type": "function",
+        "name": "get_price_request",
+        "inputs": [
+          {
+            "name": "id",
+            "type": "core::felt252"
+          }
+        ],
+        "outputs": [
+          {
+            "type": "eclipse_oracle::data_verification::vote::Vote::PriceRequest"
+          }
+        ],
+        "state_mutability": "view"
+      },
+      {
+        "type": "function",
+        "name": "vote_frequency",
+        "inputs": [
+          {
+            "name": "priceRequestId",
+            "type": "core::felt252"
+          },
+          {
+            "name": "round",
+            "type": "core::integer::u32"
+          },
+          {
+            "name": "currentMode",
+            "type": "eclipse_oracle::utils::signed256::Signed256::i256"
+          }
+        ],
+        "outputs": [
+          {
+            "type": "core::integer::u256"
+          }
+        ],
+        "state_mutability": "view"
+      },
+      {
+        "type": "function",
+        "name": "current_mode",
+        "inputs": [
+          {
+            "name": "priceRequestId",
+            "type": "core::felt252"
+          },
+          {
+            "name": "round",
+            "type": "core::integer::u32"
+          }
+        ],
+        "outputs": [
+          {
+            "type": "eclipse_oracle::utils::signed256::Signed256::i256"
+          }
+        ],
+        "state_mutability": "view"
+      },
+      {
+        "type": "function",
+        "name": "total_votes",
+        "inputs": [
+          {
+            "name": "priceRequestId",
+            "type": "core::felt252"
+          },
+          {
+            "name": "round",
+            "type": "core::integer::u32"
+          }
+        ],
+        "outputs": [
+          {
+            "type": "core::integer::u256"
+          }
+        ],
+        "state_mutability": "view"
+      },
+      {
+        "type": "function",
+        "name": "round",
+        "inputs": [
+          {
+            "name": "priceRequestId",
+            "type": "core::felt252"
+          },
+          {
+            "name": "round",
+            "type": "core::integer::u32"
+          }
+        ],
+        "outputs": [
+          {
+            "type": "eclipse_oracle::data_verification::vote::Vote::Round"
+          }
+        ],
+        "state_mutability": "view"
+      },
+      {
+        "type": "function",
+        "name": "compute_resolved_price",
+        "inputs": [
+          {
+            "name": "vote_frequency",
+            "type": "core::integer::u256"
+          },
+          {
+            "name": "total_votes",
+            "type": "core::integer::u256"
+          },
+          {
+            "name": "current_mode",
+            "type": "eclipse_oracle::utils::signed256::Signed256::i256"
+          },
+          {
+            "name": "min_total_votes",
+            "type": "core::integer::u128"
+          },
+          {
+            "name": "min_modal_votes",
+            "type": "core::integer::u128"
+          }
+        ],
+        "outputs": [
+          {
+            "type": "(core::bool, eclipse_oracle::utils::signed256::Signed256::i256)"
+          }
+        ],
+        "state_mutability": "view"
+      },
+      {
+        "type": "function",
+        "name": "request_governance_action",
+        "inputs": [
+          {
+            "name": "identifier",
+            "type": "core::felt252"
+          },
+          {
+            "name": "time",
+            "type": "core::integer::u64"
+          },
+          {
+            "name": "ancillaryData",
+            "type": "core::byte_array::ByteArray"
+          }
+        ],
+        "outputs": [],
+        "state_mutability": "external"
+      },
+      {
+        "type": "function",
+        "name": "get_round_id_to_vote_on_request",
+        "inputs": [
+          {
+            "name": "priceRequestId",
+            "type": "core::felt252"
+          },
+          {
+            "name": "targetRoundId",
+            "type": "core::integer::u32"
+          }
+        ],
+        "outputs": [
+          {
+            "type": "core::integer::u32"
+          }
+        ],
+        "state_mutability": "view"
+      },
+      {
+        "type": "function",
+        "name": "current_active_requests",
+        "inputs": [],
+        "outputs": [
+          {
+            "type": "core::bool"
+          }
+        ],
+        "state_mutability": "view"
+      },
+      {
+        "type": "function",
+        "name": "get_voter_participation",
+        "inputs": [
+          {
+            "name": "requestIndex",
+            "type": "core::integer::u256"
+          },
+          {
+            "name": "lastVotingRound",
+            "type": "core::integer::u32"
+          },
+          {
+            "name": "voter",
+            "type": "core::starknet::contract_address::ContractAddress"
+          }
+        ],
+        "outputs": [
+          {
+            "type": "eclipse_oracle::interfaces::IVote::VoteParticipation"
+          }
+        ],
+        "state_mutability": "view"
+      }
+    ]
+  },
+  {
+    "type": "impl",
+    "name": "OwnableImpl",
+    "interface_name": "openzeppelin_access::ownable::interface::IOwnable"
+  },
+  {
+    "type": "interface",
+    "name": "openzeppelin_access::ownable::interface::IOwnable",
+    "items": [
+      {
+        "type": "function",
+        "name": "owner",
+        "inputs": [],
+        "outputs": [
+          {
+            "type": "core::starknet::contract_address::ContractAddress"
+          }
+        ],
+        "state_mutability": "view"
+      },
+      {
+        "type": "function",
+        "name": "transfer_ownership",
+        "inputs": [
+          {
+            "name": "new_owner",
+            "type": "core::starknet::contract_address::ContractAddress"
+          }
+        ],
+        "outputs": [],
+        "state_mutability": "external"
+      },
+      {
+        "type": "function",
+        "name": "renounce_ownership",
+        "inputs": [],
+        "outputs": [],
+        "state_mutability": "external"
+      }
+    ]
+  },
+  {
+    "type": "impl",
+    "name": "StakerImpl",
+    "interface_name": "eclipse_oracle::interfaces::IStaker::IStaker"
+  },
+  {
+    "type": "struct",
+    "name": "eclipse_oracle::interfaces::IStaker::VoterStake",
+    "members": [
+      {
+        "name": "stake",
+        "type": "core::integer::u128"
+      },
+      {
+        "name": "pendingUnstake",
+        "type": "core::integer::u128"
+      },
+      {
+        "name": "rewardsPaidPerToken",
+        "type": "core::integer::u128"
+      },
+      {
+        "name": "outstandingRewards",
+        "type": "core::integer::u128"
+      },
+      {
+        "name": "unappliedSlash",
+        "type": "eclipse_oracle::utils::signed256::Signed256::i256"
+      },
+      {
+        "name": "nextIndexToProcess",
+        "type": "core::integer::u64"
+      },
+      {
+        "name": "unstakeTime",
+        "type": "core::integer::u64"
+      },
+      {
+        "name": "delegate",
+        "type": "core::starknet::contract_address::ContractAddress"
+      }
+    ]
+  },
+  {
+    "type": "interface",
+    "name": "eclipse_oracle::interfaces::IStaker::IStaker",
+    "items": [
+      {
+        "type": "function",
+        "name": "voter_stakes",
+        "inputs": [
+          {
+            "name": "voter",
+            "type": "core::starknet::contract_address::ContractAddress"
+          }
+        ],
+        "outputs": [
+          {
+            "type": "eclipse_oracle::interfaces::IStaker::VoterStake"
+          }
+        ],
+        "state_mutability": "view"
+      },
+      {
+        "type": "function",
+        "name": "emission_rate",
+        "inputs": [],
+        "outputs": [
+          {
+            "type": "core::integer::u128"
+          }
+        ],
+        "state_mutability": "view"
+      },
+      {
+        "type": "function",
+        "name": "reward_per_token_stored",
+        "inputs": [],
+        "outputs": [
+          {
+            "type": "core::integer::u128"
+          }
+        ],
+        "state_mutability": "view"
+      },
+      {
+        "type": "function",
+        "name": "cumulative_stake",
+        "inputs": [],
+        "outputs": [
+          {
+            "type": "core::integer::u128"
+          }
+        ],
+        "state_mutability": "view"
+      },
+      {
+        "type": "function",
+        "name": "last_update_time",
+        "inputs": [],
+        "outputs": [
+          {
+            "type": "core::integer::u64"
+          }
+        ],
+        "state_mutability": "view"
+      },
+      {
+        "type": "function",
+        "name": "voting_token",
+        "inputs": [],
+        "outputs": [
+          {
+            "type": "core::starknet::contract_address::ContractAddress"
+          }
+        ],
+        "state_mutability": "view"
+      },
+      {
+        "type": "function",
+        "name": "stake",
+        "inputs": [
+          {
+            "name": "priceRequestId",
+            "type": "core::felt252"
+          },
+          {
+            "name": "amount",
+            "type": "core::integer::u128"
+          }
+        ],
+        "outputs": [],
+        "state_mutability": "external"
+      },
+      {
+        "type": "function",
+        "name": "stake_to",
+        "inputs": [
+          {
+            "name": "priceRequestId",
+            "type": "core::felt252"
+          },
+          {
+            "name": "recipient",
+            "type": "core::starknet::contract_address::ContractAddress"
+          },
+          {
+            "name": "amount",
+            "type": "core::integer::u128"
+          }
+        ],
+        "outputs": [],
+        "state_mutability": "external"
+      },
+      {
+        "type": "function",
+        "name": "request_unstake",
+        "inputs": [
+          {
+            "name": "amount",
+            "type": "core::integer::u128"
+          }
+        ],
+        "outputs": [],
+        "state_mutability": "external"
+      },
+      {
+        "type": "function",
+        "name": "execute_unstake",
+        "inputs": [],
+        "outputs": [],
+        "state_mutability": "external"
+      },
+      {
+        "type": "function",
+        "name": "withdraw_rewards",
+        "inputs": [],
+        "outputs": [
+          {
+            "type": "core::integer::u128"
+          }
+        ],
+        "state_mutability": "external"
+      },
+      {
+        "type": "function",
+        "name": "withdraw_and_restake",
+        "inputs": [
+          {
+            "name": "priceRequestId",
+            "type": "core::felt252"
+          }
+        ],
+        "outputs": [
+          {
+            "type": "core::integer::u128"
+          }
+        ],
+        "state_mutability": "external"
+      },
+      {
+        "type": "function",
+        "name": "get_voter_from_delegate",
+        "inputs": [
+          {
+            "name": "caller",
+            "type": "core::starknet::contract_address::ContractAddress"
+          }
+        ],
+        "outputs": [
+          {
+            "type": "core::starknet::contract_address::ContractAddress"
+          }
+        ],
+        "state_mutability": "view"
+      },
+      {
+        "type": "function",
+        "name": "set_emission_rate",
+        "inputs": [
+          {
+            "name": "newEmissionRate",
+            "type": "core::integer::u128"
+          }
+        ],
+        "outputs": [],
+        "state_mutability": "external"
+      },
+      {
+        "type": "function",
+        "name": "set_unstake_cool_down",
+        "inputs": [
+          {
+            "name": "newUnstakeCoolDown",
+            "type": "core::integer::u64"
+          }
+        ],
+        "outputs": [],
+        "state_mutability": "external"
+      },
+      {
+        "type": "function",
+        "name": "set_delegate",
+        "inputs": [
+          {
+            "name": "delegate",
+            "type": "core::starknet::contract_address::ContractAddress"
+          }
+        ],
+        "outputs": [],
+        "state_mutability": "external"
+      },
+      {
+        "type": "function",
+        "name": "get_voter_pending_stake",
+        "inputs": [
+          {
+            "name": "voter",
+            "type": "core::starknet::contract_address::ContractAddress"
+          },
+          {
+            "name": "roundId",
+            "type": "core::integer::u32"
+          }
+        ],
+        "outputs": [
+          {
+            "type": "core::integer::u128"
+          }
+        ],
+        "state_mutability": "view"
+      },
+      {
+        "type": "function",
+        "name": "set_delegator",
+        "inputs": [
+          {
+            "name": "delegator",
+            "type": "core::starknet::contract_address::ContractAddress"
+          }
+        ],
+        "outputs": [],
+        "state_mutability": "external"
+      },
+      {
+        "type": "function",
+        "name": "get_voter_stake_post_update",
+        "inputs": [
+          {
+            "name": "voter",
+            "type": "core::starknet::contract_address::ContractAddress"
+          }
+        ],
+        "outputs": [
+          {
+            "type": "core::integer::u128"
+          }
+        ],
+        "state_mutability": "external"
+      },
+      {
+        "type": "function",
+        "name": "reward_per_token",
+        "inputs": [],
+        "outputs": [
+          {
+            "type": "core::integer::u256"
+          }
+        ],
+        "state_mutability": "external"
+      },
+      {
+        "type": "function",
+        "name": "outstanding_rewards",
+        "inputs": [
+          {
+            "name": "voter",
+            "type": "core::starknet::contract_address::ContractAddress"
+          }
+        ],
+        "outputs": [
+          {
+            "type": "core::integer::u256"
+          }
+        ],
+        "state_mutability": "view"
+      }
+    ]
+  },
+  {
+    "type": "constructor",
+    "name": "constructor",
+    "inputs": [
+      {
+        "name": "owner",
+        "type": "core::starknet::contract_address::ContractAddress"
+      },
+      {
+        "name": "_emissionRate",
+        "type": "core::integer::u128"
+      },
+      {
+        "name": "_unstakeCoolDown",
+        "type": "core::integer::u64"
+      },
+      {
+        "name": "_phaseLength",
+        "type": "core::integer::u256"
+      },
+      {
+        "name": "_maxRolls",
+        "type": "core::integer::u32"
+      },
+      {
+        "name": "_maxRequestsPerRound",
+        "type": "core::integer::u32"
+      },
+      {
+        "name": "_gat",
+        "type": "core::integer::u128"
+      },
+      {
+        "name": "_spat",
+        "type": "core::integer::u64"
+      },
+      {
+        "name": "_votingToken",
+        "type": "core::starknet::contract_address::ContractAddress"
+      },
+      {
+        "name": "_finder",
+        "type": "core::starknet::contract_address::ContractAddress"
+      },
+      {
+        "name": "_slashingLibrary",
+        "type": "core::starknet::contract_address::ContractAddress"
+      },
+      {
+        "name": "_previousVotingContract",
+        "type": "core::starknet::contract_address::ContractAddress"
+      }
+    ]
+  },
+  {
+    "type": "event",
+    "name": "openzeppelin_access::ownable::ownable::OwnableComponent::OwnershipTransferred",
+    "kind": "struct",
+    "members": [
+      {
+        "name": "previous_owner",
+        "type": "core::starknet::contract_address::ContractAddress",
+        "kind": "key"
+      },
+      {
+        "name": "new_owner",
+        "type": "core::starknet::contract_address::ContractAddress",
+        "kind": "key"
+      }
+    ]
+  },
+  {
+    "type": "event",
+    "name": "openzeppelin_access::ownable::ownable::OwnableComponent::OwnershipTransferStarted",
+    "kind": "struct",
+    "members": [
+      {
+        "name": "previous_owner",
+        "type": "core::starknet::contract_address::ContractAddress",
+        "kind": "key"
+      },
+      {
+        "name": "new_owner",
+        "type": "core::starknet::contract_address::ContractAddress",
+        "kind": "key"
+      }
+    ]
+  },
+  {
+    "type": "event",
+    "name": "openzeppelin_access::ownable::ownable::OwnableComponent::Event",
+    "kind": "enum",
+    "variants": [
+      {
+        "name": "OwnershipTransferred",
+        "type": "openzeppelin_access::ownable::ownable::OwnableComponent::OwnershipTransferred",
+        "kind": "nested"
+      },
+      {
+        "name": "OwnershipTransferStarted",
+        "type": "openzeppelin_access::ownable::ownable::OwnableComponent::OwnershipTransferStarted",
+        "kind": "nested"
+      }
+    ]
+  },
+  {
+    "type": "event",
+    "name": "openzeppelin_security::reentrancyguard::ReentrancyGuardComponent::Event",
+    "kind": "enum",
+    "variants": []
+  },
+  {
+    "type": "event",
+    "name": "openzeppelin_upgrades::upgradeable::UpgradeableComponent::Upgraded",
+    "kind": "struct",
+    "members": [
+      {
+        "name": "class_hash",
+        "type": "core::starknet::class_hash::ClassHash",
+        "kind": "data"
+      }
+    ]
+  },
+  {
+    "type": "event",
+    "name": "openzeppelin_upgrades::upgradeable::UpgradeableComponent::Event",
+    "kind": "enum",
+    "variants": [
+      {
+        "name": "Upgraded",
+        "type": "openzeppelin_upgrades::upgradeable::UpgradeableComponent::Upgraded",
+        "kind": "nested"
+      }
+    ]
+  },
+  {
+    "type": "event",
+    "name": "eclipse_oracle::components::staker_component::StakerComponent::UpdatedReward",
+    "kind": "struct",
+    "members": [
+      {
+        "name": "voter",
+        "type": "core::starknet::contract_address::ContractAddress",
+        "kind": "data"
+      },
+      {
+        "name": "newReward",
+        "type": "core::integer::u128",
+        "kind": "data"
+      },
+      {
+        "name": "lastUpdateTime",
+        "type": "core::integer::u64",
+        "kind": "data"
+      }
+    ]
+  },
+  {
+    "type": "event",
+    "name": "eclipse_oracle::components::staker_component::StakerComponent::Staked",
+    "kind": "struct",
+    "members": [
+      {
+        "name": "voter",
+        "type": "core::starknet::contract_address::ContractAddress",
+        "kind": "data"
+      },
+      {
+        "name": "from",
+        "type": "core::starknet::contract_address::ContractAddress",
+        "kind": "data"
+      },
+      {
+        "name": "amount",
+        "type": "core::integer::u128",
+        "kind": "data"
+      },
+      {
+        "name": "voterStake",
+        "type": "core::integer::u128",
+        "kind": "data"
+      },
+      {
+        "name": "voterPendingUnstake",
+        "type": "core::integer::u128",
+        "kind": "data"
+      },
+      {
+        "name": "cumulativeStake",
+        "type": "core::integer::u128",
+        "kind": "data"
+      }
+    ]
+  },
+  {
+    "type": "event",
+    "name": "eclipse_oracle::components::staker_component::StakerComponent::SetNewEmissionRate",
+    "kind": "struct",
+    "members": [
+      {
+        "name": "newEmissionRate",
+        "type": "core::integer::u128",
+        "kind": "data"
+      }
+    ]
+  },
+  {
+    "type": "event",
+    "name": "eclipse_oracle::components::staker_component::StakerComponent::SetNewUnstakeCoolDown",
+    "kind": "struct",
+    "members": [
+      {
+        "name": "newUnstakeCoolDown",
+        "type": "core::integer::u64",
+        "kind": "data"
+      }
+    ]
+  },
+  {
+    "type": "event",
+    "name": "eclipse_oracle::components::staker_component::StakerComponent::RequestedUnstake",
+    "kind": "struct",
+    "members": [
+      {
+        "name": "voter",
+        "type": "core::starknet::contract_address::ContractAddress",
+        "kind": "data"
+      },
+      {
+        "name": "amount",
+        "type": "core::integer::u128",
+        "kind": "data"
+      },
+      {
+        "name": "unstakeTime",
+        "type": "core::integer::u64",
+        "kind": "data"
+      },
+      {
+        "name": "voterStake",
+        "type": "core::integer::u128",
+        "kind": "data"
+      }
+    ]
+  },
+  {
+    "type": "event",
+    "name": "eclipse_oracle::components::staker_component::StakerComponent::ExecutedUnstake",
+    "kind": "struct",
+    "members": [
+      {
+        "name": "voter",
+        "type": "core::starknet::contract_address::ContractAddress",
+        "kind": "data"
+      },
+      {
+        "name": "tokensSent",
+        "type": "core::integer::u128",
+        "kind": "data"
+      },
+      {
+        "name": "voterStake",
+        "type": "core::integer::u128",
+        "kind": "data"
+      }
+    ]
+  },
+  {
+    "type": "event",
+    "name": "eclipse_oracle::components::staker_component::StakerComponent::WithdrawnRewards",
+    "kind": "struct",
+    "members": [
+      {
+        "name": "voter",
+        "type": "core::starknet::contract_address::ContractAddress",
+        "kind": "data"
+      },
+      {
+        "name": "delegate",
+        "type": "core::starknet::contract_address::ContractAddress",
+        "kind": "data"
+      },
+      {
+        "name": "tokensWithdrawn",
+        "type": "core::integer::u128",
+        "kind": "data"
+      }
+    ]
+  },
+  {
+    "type": "event",
+    "name": "eclipse_oracle::components::staker_component::StakerComponent::DelegateSet",
+    "kind": "struct",
+    "members": [
+      {
+        "name": "delegator",
+        "type": "core::starknet::contract_address::ContractAddress",
+        "kind": "data"
+      },
+      {
+        "name": "delegate",
+        "type": "core::starknet::contract_address::ContractAddress",
+        "kind": "data"
+      }
+    ]
+  },
+  {
+    "type": "event",
+    "name": "eclipse_oracle::components::staker_component::StakerComponent::DelegatorSet",
+    "kind": "struct",
+    "members": [
+      {
+        "name": "delegate",
+        "type": "core::starknet::contract_address::ContractAddress",
+        "kind": "data"
+      },
+      {
+        "name": "delegator",
+        "type": "core::starknet::contract_address::ContractAddress",
+        "kind": "data"
+      }
+    ]
+  },
+  {
+    "type": "event",
+    "name": "eclipse_oracle::components::staker_component::StakerComponent::Event",
+    "kind": "enum",
+    "variants": [
+      {
+        "name": "UpdatedReward",
+        "type": "eclipse_oracle::components::staker_component::StakerComponent::UpdatedReward",
+        "kind": "nested"
+      },
+      {
+        "name": "Staked",
+        "type": "eclipse_oracle::components::staker_component::StakerComponent::Staked",
+        "kind": "nested"
+      },
+      {
+        "name": "SetNewEmissionRate",
+        "type": "eclipse_oracle::components::staker_component::StakerComponent::SetNewEmissionRate",
+        "kind": "nested"
+      },
+      {
+        "name": "SetNewUnstakeCoolDown",
+        "type": "eclipse_oracle::components::staker_component::StakerComponent::SetNewUnstakeCoolDown",
+        "kind": "nested"
+      },
+      {
+        "name": "RequestedUnstake",
+        "type": "eclipse_oracle::components::staker_component::StakerComponent::RequestedUnstake",
+        "kind": "nested"
+      },
+      {
+        "name": "ExecutedUnstake",
+        "type": "eclipse_oracle::components::staker_component::StakerComponent::ExecutedUnstake",
+        "kind": "nested"
+      },
+      {
+        "name": "WithdrawnRewards",
+        "type": "eclipse_oracle::components::staker_component::StakerComponent::WithdrawnRewards",
+        "kind": "nested"
+      },
+      {
+        "name": "DelegateSet",
+        "type": "eclipse_oracle::components::staker_component::StakerComponent::DelegateSet",
+        "kind": "nested"
+      },
+      {
+        "name": "DelegatorSet",
+        "type": "eclipse_oracle::components::staker_component::StakerComponent::DelegatorSet",
+        "kind": "nested"
+      }
+    ]
+  },
+  {
+    "type": "event",
+    "name": "eclipse_oracle::data_verification::vote::Vote::PriceRequestAdded",
+    "kind": "struct",
+    "members": [
+      {
+        "name": "requester",
+        "type": "core::starknet::contract_address::ContractAddress",
+        "kind": "data"
+      },
+      {
+        "name": "roundId",
+        "type": "core::integer::u256",
+        "kind": "data"
+      },
+      {
+        "name": "identifier",
+        "type": "core::felt252",
+        "kind": "data"
+      },
+      {
+        "name": "time",
+        "type": "core::integer::u64",
+        "kind": "data"
+      },
+      {
+        "name": "ancillaryData",
+        "type": "core::byte_array::ByteArray",
+        "kind": "data"
+      },
+      {
+        "name": "isGovernance",
+        "type": "core::bool",
+        "kind": "data"
+      }
+    ]
+  },
+  {
+    "type": "event",
+    "name": "eclipse_oracle::data_verification::vote::Vote::VoteCommitted",
+    "kind": "struct",
+    "members": [
+      {
+        "name": "voter",
+        "type": "core::starknet::contract_address::ContractAddress",
+        "kind": "key"
+      },
+      {
+        "name": "caller",
+        "type": "core::starknet::contract_address::ContractAddress",
+        "kind": "key"
+      },
+      {
+        "name": "roundId",
+        "type": "core::integer::u256",
+        "kind": "key"
+      },
+      {
+        "name": "identifier",
+        "type": "core::felt252",
+        "kind": "key"
+      },
+      {
+        "name": "time",
+        "type": "core::integer::u64",
+        "kind": "data"
+      },
+      {
+        "name": "ancillaryData",
+        "type": "core::byte_array::ByteArray",
+        "kind": "data"
+      }
+    ]
+  },
+  {
+    "type": "event",
+    "name": "eclipse_oracle::data_verification::vote::Vote::VoteRevealed",
+    "kind": "struct",
+    "members": [
+      {
+        "name": "voter",
+        "type": "core::starknet::contract_address::ContractAddress",
+        "kind": "key"
+      },
+      {
+        "name": "caller",
+        "type": "core::starknet::contract_address::ContractAddress",
+        "kind": "data"
+      },
+      {
+        "name": "roundId",
+        "type": "core::integer::u256",
+        "kind": "key"
+      },
+      {
+        "name": "identifier",
+        "type": "core::felt252",
+        "kind": "key"
+      },
+      {
+        "name": "time",
+        "type": "core::integer::u64",
+        "kind": "data"
+      },
+      {
+        "name": "ancillaryData",
+        "type": "core::byte_array::ByteArray",
+        "kind": "data"
+      },
+      {
+        "name": "price",
+        "type": "eclipse_oracle::utils::signed256::Signed256::i256",
+        "kind": "data"
+      },
+      {
+        "name": "numTokens",
+        "type": "core::integer::u256",
+        "kind": "data"
+      }
+    ]
+  },
+  {
+    "type": "event",
+    "name": "eclipse_oracle::data_verification::vote::Vote::EncryptedVote",
+    "kind": "struct",
+    "members": [
+      {
+        "name": "voter",
+        "type": "core::starknet::contract_address::ContractAddress",
+        "kind": "key"
+      },
+      {
+        "name": "roundId",
+        "type": "core::integer::u256",
+        "kind": "key"
+      },
+      {
+        "name": "identifier",
+        "type": "core::felt252",
+        "kind": "key"
+      },
+      {
+        "name": "time",
+        "type": "core::integer::u64",
+        "kind": "data"
+      },
+      {
+        "name": "ancillaryData",
+        "type": "core::byte_array::ByteArray",
+        "kind": "data"
+      },
+      {
+        "name": "encryptedVote",
+        "type": "core::byte_array::ByteArray",
+        "kind": "data"
+      }
+    ]
+  },
+  {
+    "type": "event",
+    "name": "eclipse_oracle::data_verification::vote::Vote::PriceResolved",
+    "kind": "struct",
+    "members": [
+      {
+        "name": "roundId",
+        "type": "core::integer::u256",
+        "kind": "data"
+      },
+      {
+        "name": "identifier",
+        "type": "core::felt252",
+        "kind": "data"
+      },
+      {
+        "name": "time",
+        "type": "core::integer::u64",
+        "kind": "data"
+      },
+      {
+        "name": "price",
+        "type": "eclipse_oracle::utils::signed256::Signed256::i256",
+        "kind": "data"
+      },
+      {
+        "name": "ancillaryData",
+        "type": "core::byte_array::ByteArray",
+        "kind": "data"
+      }
+    ]
+  },
+  {
+    "type": "event",
+    "name": "eclipse_oracle::data_verification::vote::Vote::RewardsRetrieved",
+    "kind": "struct",
+    "members": [
+      {
+        "name": "voter",
+        "type": "core::starknet::contract_address::ContractAddress",
+        "kind": "data"
+      },
+      {
+        "name": "roundId",
+        "type": "core::integer::u256",
+        "kind": "data"
+      },
+      {
+        "name": "identifier",
+        "type": "core::felt252",
+        "kind": "data"
+      },
+      {
+        "name": "time",
+        "type": "core::integer::u64",
+        "kind": "data"
+      },
+      {
+        "name": "ancillaryData",
+        "type": "core::byte_array::ByteArray",
+        "kind": "data"
+      },
+      {
+        "name": "numTokens",
+        "type": "core::integer::u256",
+        "kind": "data"
+      }
+    ]
+  },
+  {
+    "type": "event",
+    "name": "eclipse_oracle::data_verification::vote::Vote::RequestResolved",
+    "kind": "struct",
+    "members": [
+      {
+        "name": "roundId",
+        "type": "core::integer::u32",
+        "kind": "data"
+      },
+      {
+        "name": "resolvedPriceRequestIndex",
+        "type": "core::integer::u256",
+        "kind": "data"
+      },
+      {
+        "name": "identifier",
+        "type": "core::felt252",
+        "kind": "data"
+      },
+      {
+        "name": "time",
+        "type": "core::integer::u64",
+        "kind": "data"
+      },
+      {
+        "name": "ancillaryData",
+        "type": "core::byte_array::ByteArray",
+        "kind": "data"
+      },
+      {
+        "name": "price",
+        "type": "eclipse_oracle::utils::signed256::Signed256::i256",
+        "kind": "data"
+      }
+    ]
+  },
+  {
+    "type": "event",
+    "name": "eclipse_oracle::data_verification::vote::Vote::RequestDeleted",
+    "kind": "struct",
+    "members": [
+      {
+        "name": "identifier",
+        "type": "core::felt252",
+        "kind": "data"
+      },
+      {
+        "name": "time",
+        "type": "core::integer::u64",
+        "kind": "data"
+      },
+      {
+        "name": "ancillaryData",
+        "type": "core::byte_array::ByteArray",
+        "kind": "data"
+      },
+      {
+        "name": "rollCount",
+        "type": "core::integer::u32",
+        "kind": "data"
+      }
+    ]
+  },
+  {
+    "type": "event",
+    "name": "eclipse_oracle::data_verification::vote::Vote::RequestRolled",
+    "kind": "struct",
+    "members": [
+      {
+        "name": "identifier",
+        "type": "core::felt252",
+        "kind": "data"
+      },
+      {
+        "name": "time",
+        "type": "core::integer::u64",
+        "kind": "data"
+      },
+      {
+        "name": "ancillaryData",
+        "type": "core::byte_array::ByteArray",
+        "kind": "data"
+      },
+      {
+        "name": "rollCount",
+        "type": "core::integer::u32",
+        "kind": "data"
+      }
+    ]
+  },
+  {
+    "type": "event",
+    "name": "eclipse_oracle::data_verification::vote::Vote::VotingContractMigrated",
+    "kind": "struct",
+    "members": [
+      {
+        "name": "newAddress",
+        "type": "core::starknet::contract_address::ContractAddress",
+        "kind": "data"
+      }
+    ]
+  },
+  {
+    "type": "event",
+    "name": "eclipse_oracle::data_verification::vote::Vote::MaxRollsChanged",
+    "kind": "struct",
+    "members": [
+      {
+        "name": "newMaxRolls",
+        "type": "core::integer::u32",
+        "kind": "data"
+      }
+    ]
+  },
+  {
+    "type": "event",
+    "name": "eclipse_oracle::data_verification::vote::Vote::MaxRequestsPerRoundChanged",
+    "kind": "struct",
+    "members": [
+      {
+        "name": "newMaxRequestsPerRound",
+        "type": "core::integer::u32",
+        "kind": "data"
+      }
+    ]
+  },
+  {
+    "type": "event",
+    "name": "eclipse_oracle::data_verification::vote::Vote::GatAndSpatChanged",
+    "kind": "struct",
+    "members": [
+      {
+        "name": "newGat",
+        "type": "core::integer::u128",
+        "kind": "data"
+      },
+      {
+        "name": "newSpat",
+        "type": "core::integer::u64",
+        "kind": "data"
+      }
+    ]
+  },
+  {
+    "type": "event",
+    "name": "eclipse_oracle::data_verification::vote::Vote::SlashingLibraryChanged",
+    "kind": "struct",
+    "members": [
+      {
+        "name": "newAddress",
+        "type": "core::starknet::contract_address::ContractAddress",
+        "kind": "data"
+      }
+    ]
+  },
+  {
+    "type": "event",
+    "name": "eclipse_oracle::data_verification::vote::Vote::VoterSlashed",
+    "kind": "struct",
+    "members": [
+      {
+        "name": "voter",
+        "type": "core::starknet::contract_address::ContractAddress",
+        "kind": "data"
+      },
+      {
+        "name": "requestIndex",
+        "type": "core::integer::u256",
+        "kind": "data"
+      },
+      {
+        "name": "slashedTokens",
+        "type": "eclipse_oracle::utils::signed256::Signed256::i256",
+        "kind": "data"
+      }
+    ]
+  },
+  {
+    "type": "event",
+    "name": "eclipse_oracle::data_verification::vote::Vote::VoterSlashApplied",
+    "kind": "struct",
+    "members": [
+      {
+        "name": "voter",
+        "type": "core::starknet::contract_address::ContractAddress",
+        "kind": "data"
+      },
+      {
+        "name": "slashedTokens",
+        "type": "eclipse_oracle::utils::signed256::Signed256::i256",
+        "kind": "data"
+      },
+      {
+        "name": "postStake",
+        "type": "core::integer::u128",
+        "kind": "data"
+      }
+    ]
+  },
+  {
+    "type": "event",
+    "name": "eclipse_oracle::data_verification::vote::Vote::Event",
+    "kind": "enum",
+    "variants": [
+      {
+        "name": "OwnableEvent",
+        "type": "openzeppelin_access::ownable::ownable::OwnableComponent::Event",
+        "kind": "flat"
+      },
+      {
+        "name": "ReentrancyGuardEvent",
+        "type": "openzeppelin_security::reentrancyguard::ReentrancyGuardComponent::Event",
+        "kind": "flat"
+      },
+      {
+        "name": "UpgradeableEvent",
+        "type": "openzeppelin_upgrades::upgradeable::UpgradeableComponent::Event",
+        "kind": "flat"
+      },
+      {
+        "name": "StakerEvent",
+        "type": "eclipse_oracle::components::staker_component::StakerComponent::Event",
+        "kind": "flat"
+      },
+      {
+        "name": "PriceRequestAdded",
+        "type": "eclipse_oracle::data_verification::vote::Vote::PriceRequestAdded",
+        "kind": "nested"
+      },
+      {
+        "name": "VoteCommitted",
+        "type": "eclipse_oracle::data_verification::vote::Vote::VoteCommitted",
+        "kind": "nested"
+      },
+      {
+        "name": "VoteRevealed",
+        "type": "eclipse_oracle::data_verification::vote::Vote::VoteRevealed",
+        "kind": "nested"
+      },
+      {
+        "name": "EncryptedVote",
+        "type": "eclipse_oracle::data_verification::vote::Vote::EncryptedVote",
+        "kind": "nested"
+      },
+      {
+        "name": "PriceResolved",
+        "type": "eclipse_oracle::data_verification::vote::Vote::PriceResolved",
+        "kind": "nested"
+      },
+      {
+        "name": "RewardsRetrieved",
+        "type": "eclipse_oracle::data_verification::vote::Vote::RewardsRetrieved",
+        "kind": "nested"
+      },
+      {
+        "name": "RequestResolved",
+        "type": "eclipse_oracle::data_verification::vote::Vote::RequestResolved",
+        "kind": "nested"
+      },
+      {
+        "name": "RequestDeleted",
+        "type": "eclipse_oracle::data_verification::vote::Vote::RequestDeleted",
+        "kind": "nested"
+      },
+      {
+        "name": "RequestRolled",
+        "type": "eclipse_oracle::data_verification::vote::Vote::RequestRolled",
+        "kind": "nested"
+      },
+      {
+        "name": "VotingContractMigrated",
+        "type": "eclipse_oracle::data_verification::vote::Vote::VotingContractMigrated",
+        "kind": "nested"
+      },
+      {
+        "name": "MaxRollsChanged",
+        "type": "eclipse_oracle::data_verification::vote::Vote::MaxRollsChanged",
+        "kind": "nested"
+      },
+      {
+        "name": "MaxRequestsPerRoundChanged",
+        "type": "eclipse_oracle::data_verification::vote::Vote::MaxRequestsPerRoundChanged",
+        "kind": "nested"
+      },
+      {
+        "name": "GatAndSpatChanged",
+        "type": "eclipse_oracle::data_verification::vote::Vote::GatAndSpatChanged",
+        "kind": "nested"
+      },
+      {
+        "name": "SlashingLibraryChanged",
+        "type": "eclipse_oracle::data_verification::vote::Vote::SlashingLibraryChanged",
+        "kind": "nested"
+      },
+      {
+        "name": "VoterSlashed",
+        "type": "eclipse_oracle::data_verification::vote::Vote::VoterSlashed",
+        "kind": "nested"
+      },
+      {
+        "name": "VoterSlashApplied",
+        "type": "eclipse_oracle::data_verification::vote::Vote::VoterSlashApplied",
+        "kind": "nested"
+      }
+    ]
+  }
+]
