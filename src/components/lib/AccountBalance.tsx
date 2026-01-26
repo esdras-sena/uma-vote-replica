@@ -1,27 +1,75 @@
-interface AccountBalanceProps {
+import { useReadContract } from "@starknet-react/core";
+import Erc20Abi from "./token.abi.json";
+import { formatCurrency } from "./helpers";
+import { Abi } from "starknet";
+
+type Props = {
   address: string;
   heading?: boolean;
-}
+};
 
-const AccountBalance = ({ address, heading = true }: AccountBalanceProps) => {
-  if (!address) return null;
+function AccountBalance({ address, heading = true }: Props) {
+  const { data: eth, isLoading: ethLoading } = useReadContract({
+    address: "0x049d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7",
+    abi: Erc20Abi as Abi,
+    functionName: "balanceOf",
+    args: [address!],
+    watch: true,
+  });
+
+  const { data: strk, isLoading: strkLoading } = useReadContract({
+    address: "0x04718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d",
+    abi: Erc20Abi as Abi,
+    functionName: "balanceOf",
+    args: [address!],
+    watch: true,
+  });
+
+  // @ts-ignore
+  const ethBalance = formatCurrency(eth?.balance?.low?.toString());
+  // @ts-ignore
+  const strkBalance = formatCurrency(strk?.balance?.low?.toString());
 
   return (
-    <div className="space-y-2">
-      {heading && <h4 className="text-sm text-muted-foreground mb-2">Balance</h4>}
-      <div className="flex items-center justify-between p-3 rounded-lg bg-muted/30 border border-border">
-        <div className="flex items-center gap-2">
-          <div className="w-6 h-6 rounded-full bg-blue-500/20 flex items-center justify-center">
-            <span className="text-xs">Ξ</span>
+    <div className="p-3 text-sm bg-card border border-border rounded-md">
+      {heading && <h3 className="mb-4 text-sm text-muted-foreground">Balance</h3>}
+
+      <div className="flex flex-col gap-4 text-card-foreground">
+        <div className="flex justify-between">
+          <div className="flex items-center gap-4">
+            <div className="h-7 w-7 rounded-full md:h-9 md:w-9 bg-blue-500/20 flex items-center justify-center">
+              <span className="text-sm">Ξ</span>
+            </div>
+            <div>
+              <p className="mb-1 text-sm font-medium">ETH</p>
+              <p className="text-xs text-muted-foreground">Ethereum</p>
+            </div>
           </div>
-          <span className="text-sm font-medium">ETH</span>
+          <div className="mr-4 flex items-center">
+            <p className="font-mono text-sm">
+              {ethLoading ? "..." : Number(ethBalance).toFixed(4)}
+            </p>
+          </div>
         </div>
-        <span className="text-sm text-muted-foreground">
-          —
-        </span>
+        <div className="flex justify-between">
+          <div className="flex items-center gap-4">
+            <div className="h-7 w-7 rounded-full md:h-9 md:w-9 bg-purple-500/20 flex items-center justify-center">
+              <span className="text-sm">◆</span>
+            </div>
+            <div>
+              <p className="mb-1 text-sm font-medium">STRK</p>
+              <p className="text-xs text-muted-foreground">Starknet token</p>
+            </div>
+          </div>
+          <div className="mr-4 flex items-center">
+            <p className="font-mono text-sm">
+              {strkLoading ? "..." : Number(strkBalance).toFixed(4)}
+            </p>
+          </div>
+        </div>
       </div>
     </div>
   );
-};
+}
 
 export default AccountBalance;
