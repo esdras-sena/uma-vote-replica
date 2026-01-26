@@ -26,8 +26,9 @@ export async function getStakedAmount(userAddress: string): Promise<string> {
       rawAmount = BigInt(stakedAmount || 0);
     }
     
-    const amount = Number(rawAmount) / 1e18;
-    return amount.toFixed(2);
+    // Use BigInt division
+    const amount = rawAmount / 1000000000000000000n;
+    return amount.toString();
   } catch (err) {
     console.error("Failed to fetch staked amount:", err);
     return "0";
@@ -58,8 +59,9 @@ export async function getUmbraBalance(userAddress: string): Promise<string> {
       rawBalance = BigInt(balance || 0);
     }
     
-    const amount = Number(rawBalance) / 1e18;
-    return amount.toFixed(2);
+    // Use BigInt division
+    const amount = rawBalance / 1000000000000000000n;
+    return amount.toString();
   } catch (err) {
     console.error("Failed to fetch UMBRA balance:", err);
     return "0";
