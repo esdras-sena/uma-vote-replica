@@ -22,7 +22,11 @@ export const VotingRoundBanner = ({ timeLeft, onRemindMe, onStakeClick }: Voting
       <div className="flex items-center gap-4">
         {onStakeClick && (
           <Button 
-            onClick={onStakeClick}
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation();
+              onStakeClick();
+            }}
             variant="outline"
             className="border-amber text-amber hover:bg-amber/10"
           >
