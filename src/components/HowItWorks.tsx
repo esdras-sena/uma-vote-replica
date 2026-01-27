@@ -1,6 +1,6 @@
 import { useEffect, useState, type ReactNode } from "react";
 import { useAccount } from "@starknet-react/core";
-import { getStakedAmount, getUmbraBalance } from "@/web3/getStakingInfo";
+import { getStakedAmount, getUmbraBalance, getOutstandingRewards } from "@/web3/getStakingInfo";
 import { getApr } from "@/web3/getApr";
 import { getVoteCount } from "@/web3/getVoteCount";
 
@@ -17,6 +17,7 @@ export const HowItWorks = () => {
   const [umbraBalance, setUmbraBalance] = useState<string>("0");
   const [apr, setApr] = useState<string>("0");
   const [voteCount, setVoteCount] = useState<number>(0);
+  const [unclaimedRewards, setUnclaimedRewards] = useState<string>("0");
 
   useEffect(() => {
     // Fetch APR (doesn't need user address)
@@ -29,16 +30,18 @@ export const HowItWorks = () => {
 
   useEffect(() => {
     if (address) {
-      // Fetch staking info and vote count when user address is available
+      // Fetch staking info, vote count, and unclaimed rewards when user address is available
       Promise.all([
         getStakedAmount(address),
         getUmbraBalance(address),
         getVoteCount(address),
+        getOutstandingRewards(address),
       ])
-        .then(([staked, balance, votes]) => {
+        .then(([staked, balance, votes, rewards]) => {
           setStakedAmount(staked);
           setUmbraBalance(balance);
           setVoteCount(votes);
+          setUnclaimedRewards(rewards);
         })
         .catch((err) => console.error("Failed to fetch staking info:", err));
     }
@@ -63,7 +66,7 @@ export const HowItWorks = () => {
     {
       number: 3,
       title: "Get rewards",
-      description: <>Your unclaimed UMBRA rewards: <span className="font-semibold">0</span></>,
+      description: <>Your unclaimed UMBRA rewards: <span className="font-semibold">{unclaimedRewards}</span></>,
       action: "Claim",
     },
   ];
