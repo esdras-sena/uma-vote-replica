@@ -91,6 +91,7 @@ export const StakeUnstakePanel = ({ open, onOpenChange }: StakeUnstakePanelProps
         return;
       }
 
+      console.log("rawAmount ", rawAmount)
       // Build multicall: approve + stake using CallData.compile and cairo.uint256
       const calls = [
         {

@@ -888,6 +888,39 @@
       },
       {
         "type": "function",
+        "name": "get_active_requests",
+        "inputs": [],
+        "outputs": [
+          {
+            "type": "core::array::Array::<eclipse_oracle::data_verification::vote::Vote::PriceRequest>"
+          }
+        ],
+        "state_mutability": "view"
+      },
+      {
+        "type": "function",
+        "name": "get_future_requests",
+        "inputs": [],
+        "outputs": [
+          {
+            "type": "core::array::Array::<eclipse_oracle::data_verification::vote::Vote::PriceRequest>"
+          }
+        ],
+        "state_mutability": "view"
+      },
+      {
+        "type": "function",
+        "name": "get_resolved_requests",
+        "inputs": [],
+        "outputs": [
+          {
+            "type": "core::array::Array::<eclipse_oracle::data_verification::vote::Vote::PriceRequest>"
+          }
+        ],
+        "state_mutability": "view"
+      },
+      {
+        "type": "function",
         "name": "get_voter_participation",
         "inputs": [
           {
@@ -1132,12 +1165,7 @@
       {
         "type": "function",
         "name": "withdraw_and_restake",
-        "inputs": [
-          {
-            "name": "priceRequestId",
-            "type": "core::felt252"
-          }
-        ],
+        "inputs": [],
         "outputs": [
           {
             "type": "core::integer::u128"
