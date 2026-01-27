@@ -3,6 +3,7 @@ import { Navigation } from "@/components/Navigation";
 import { UpcomingVotes, UpcomingVoteItem } from "@/components/UpcomingVotes";
 import { VotingRoundBanner } from "@/components/VotingRoundBanner";
 import { StakeUnstakePanel } from "@/components/StakeUnstakePanel";
+import { DetailPanel, DetailItem } from "@/components/DetailPanel";
 
 const mockUpcomingVotes: UpcomingVoteItem[] = [
   {
@@ -45,6 +46,17 @@ const mockUpcomingVotes: UpcomingVoteItem[] = [
 
 const UpcomingVotesPage = () => {
   const [stakeModalOpen, setStakeModalOpen] = useState(false);
+  const [selectedItem, setSelectedItem] = useState<DetailItem | null>(null);
+  const [isPanelOpen, setIsPanelOpen] = useState(false);
+
+  const handleItemClick = (item: UpcomingVoteItem) => {
+    setSelectedItem(item);
+    setIsPanelOpen(true);
+  };
+
+  const handleClosePanel = () => {
+    setIsPanelOpen(false);
+  };
 
   return (
     <div className="min-h-screen bg-background">
@@ -68,11 +80,13 @@ const UpcomingVotesPage = () => {
         
         <UpcomingVotes 
           items={mockUpcomingVotes} 
-          onItemClick={(item) => console.log("Upcoming vote clicked:", item)} 
+          onItemClick={handleItemClick}
         />
       </div>
 
       <StakeUnstakePanel open={stakeModalOpen} onOpenChange={setStakeModalOpen} />
+
+      <DetailPanel item={selectedItem} isOpen={isPanelOpen} onClose={handleClosePanel} />
     </div>
   );
 };
