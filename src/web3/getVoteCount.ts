@@ -41,19 +41,21 @@ export async function getVoteCount(userAddress: string): Promise<number> {
     const latestBlock = await provider.getBlockNumber();
     
     // VoteCommitted struct keys: voter, caller, roundId (u256), identifier
-    // Filter structure: [eventSelector, voter, caller, roundId_low, roundId_high]
+    // u256 in Cairo is always serialized as 2 felts: low (128 bits) + high (128 bits)
+    // Filter: [eventSelector, voter, caller, roundIdLow, roundIdHigh, identifier]
     
     const eventSelector = num.toHex(hash.starknetKeccak('VoteCommitted'));
     const voterKey = num.toHex(userAddress);
     const roundIdLow = num.toHex(currentRoundId);
-    const roundIdHigh = num.toHex(0);
+    const roundIdHigh = num.toHex(0); // High part is 0 for small roundIds
     
     const keyFilter = [
-      [eventSelector],    // Event selector
-      [voterKey],         // voter address
-      [],                 // caller (any)
-      [roundIdLow],       // roundId low (u256 splits into 2 felts)
-      [roundIdHigh],      // roundId high
+      [eventSelector],    // Event selector (position 0)
+      [voterKey],         // voter address (position 1)
+      [],                 // caller - any (position 2)
+      [roundIdLow],       // roundId low part (position 3)
+      [roundIdHigh],      // roundId high part (position 4)
+      [],                 // identifier - any (position 5)
     ];
     
     let allEvents: any[] = [];
