@@ -82,3 +82,32 @@ export async function getUmbraBalance(userAddress: string): Promise<string> {
     return "0";
   }
 }
+
+export async function getOutstandingRewards(userAddress: string): Promise<string> {
+  if (!userAddress) return "0";
+  
+  const voteAddr = import.meta.env.VITE_VOTE_CONTRACT || "0x6975fc84224e0f89bc049ac24e0849cb099379487cf3e3d8c38ddafe62eb8e8";
+  
+  try {
+    const abi = await loadAbi(voteAddr);
+    const voteContract = new Contract({ abi, address: voteAddr, providerOrAccount: provider });
+    const rewards = await voteContract.outstanding_rewards(userAddress);
+    
+    // Handle u256 response (has low/high properties)
+    let rawRewards: bigint;
+    if (typeof rewards === 'object' && rewards !== null) {
+      if (rewards.low !== undefined) {
+        rawRewards = BigInt(rewards.low);
+      } else {
+        rawRewards = BigInt(rewards.toString());
+      }
+    } else {
+      rawRewards = BigInt(rewards || 0);
+    }
+    
+    return formatBigIntToDecimal(rawRewards);
+  } catch (err) {
+    console.error("Failed to fetch outstanding rewards:", err);
+    return "0";
+  }
+}
