@@ -1,11 +1,13 @@
 import { ClipboardCheck } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 interface VotingRoundBannerProps {
   timeLeft: string;
   onRemindMe?: () => void;
+  onStakeClick?: () => void;
 }
 
-export const VotingRoundBanner = ({ timeLeft, onRemindMe }: VotingRoundBannerProps) => {
+export const VotingRoundBanner = ({ timeLeft, onRemindMe, onStakeClick }: VotingRoundBannerProps) => {
   return (
     <div className="bg-secondary/50 rounded-lg px-6 py-4 flex items-center justify-between">
       <div className="flex items-center gap-3">
@@ -17,12 +19,23 @@ export const VotingRoundBanner = ({ timeLeft, onRemindMe }: VotingRoundBannerPro
         </p>
       </div>
       
-      <button 
-        onClick={onRemindMe}
-        className="text-amber hover:text-amber/80 font-medium transition-colors"
-      >
-        Remind me
-      </button>
+      <div className="flex items-center gap-4">
+        {onStakeClick && (
+          <Button 
+            onClick={onStakeClick}
+            variant="outline"
+            className="border-amber text-amber hover:bg-amber/10"
+          >
+            Stake / Unstake
+          </Button>
+        )}
+        <button 
+          onClick={onRemindMe}
+          className="text-amber hover:text-amber/80 font-medium transition-colors"
+        >
+          Remind me
+        </button>
+      </div>
     </div>
   );
 };
