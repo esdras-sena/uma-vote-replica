@@ -1,14 +1,12 @@
 import { useState, useEffect } from "react";
 import { useAccount, useSendTransaction } from "@starknet-react/core";
-import { Contract } from "starknet";
-import { X } from "lucide-react";
+import { CallData, cairo } from "starknet";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { getStakedAmount, getUmbraBalance } from "@/web3/getStakingInfo";
-import { loadAbi } from "@/web3/utils/fetchEvents";
 import { toast } from "@/hooks/use-toast";
 
 interface StakeUnstakePanelProps {
@@ -79,23 +77,28 @@ export const StakeUnstakePanel = ({ open, onOpenChange }: StakeUnstakePanelProps
     setIsLoading(true);
     try {
       const rawAmount = parseDecimalToBigInt(amount);
-      
-      // Load ABIs
-      const [umbraAbi, voteAbi] = await Promise.all([
-        loadAbi(UMBRA_CONTRACT),
-        loadAbi(VOTE_CONTRACT),
-      ]);
 
-      // Create contract instances for call building
-      const umbraContract = new Contract({ abi: umbraAbi, address: UMBRA_CONTRACT });
-      const voteContract = new Contract({ abi: voteAbi, address: VOTE_CONTRACT });
-
-      // Build multicall: approve + stake (pass raw bigint, starknet.js handles u256 conversion)
-      const approveCall = umbraContract.populate("approve", [VOTE_CONTRACT, rawAmount]);
-      const stakeCall = voteContract.populate("stake", [rawAmount]);
+      // Build multicall: approve + stake using CallData.compile and cairo.uint256
+      const calls = [
+        {
+          contractAddress: UMBRA_CONTRACT,
+          entrypoint: "approve",
+          calldata: CallData.compile({
+            spender: VOTE_CONTRACT,
+            amount: cairo.uint256(rawAmount),
+          }),
+        },
+        {
+          contractAddress: VOTE_CONTRACT,
+          entrypoint: "stake",
+          calldata: CallData.compile({
+            amount: cairo.uint256(rawAmount),
+          }),
+        },
+      ];
 
       // Execute multicall
-      await sendAsync([approveCall, stakeCall]);
+      await sendAsync(calls);
 
       toast({ title: "Stake successful!", description: `Staked ${amount} UMBRA` });
       setAmount("");
@@ -118,13 +121,18 @@ export const StakeUnstakePanel = ({ open, onOpenChange }: StakeUnstakePanelProps
     setIsLoading(true);
     try {
       const rawAmount = parseDecimalToBigInt(amount);
-      
-      const voteAbi = await loadAbi(VOTE_CONTRACT);
-      const voteContract = new Contract({ abi: voteAbi, address: VOTE_CONTRACT });
 
-      const unstakeCall = voteContract.populate("request_unstake", [rawAmount]);
+      const calls = [
+        {
+          contractAddress: VOTE_CONTRACT,
+          entrypoint: "request_unstake",
+          calldata: CallData.compile({
+            amount: cairo.uint256(rawAmount),
+          }),
+        },
+      ];
 
-      await sendAsync([unstakeCall]);
+      await sendAsync(calls);
 
       toast({ title: "Unstake requested!", description: `Requested unstake of ${amount} UMBRA` });
       setAmount("");
