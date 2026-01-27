@@ -1,8 +1,10 @@
+import { useState } from "react";
 import { ChevronRight, History } from "lucide-react";
 import { Navigation } from "@/components/Navigation";
 import { PastVoteItem } from "@/components/PastVotes";
 import { VotingRoundBanner } from "@/components/VotingRoundBanner";
 import { Badge } from "@/components/ui/badge";
+import { PastVoteDetailPanel } from "@/components/PastVoteDetailPanel";
 
 const mockPastVotes: PastVoteItem[] = [
   {
@@ -68,6 +70,18 @@ const mockPastVotes: PastVoteItem[] = [
 ];
 
 const PastVotesPage = () => {
+  const [selectedItem, setSelectedItem] = useState<PastVoteItem | null>(null);
+  const [isPanelOpen, setIsPanelOpen] = useState(false);
+
+  const handleItemClick = (item: PastVoteItem) => {
+    setSelectedItem(item);
+    setIsPanelOpen(true);
+  };
+
+  const handleClosePanel = () => {
+    setIsPanelOpen(false);
+  };
+
   return (
     <div className="min-h-screen bg-background">
       <Navigation activeTab="past" />
@@ -89,9 +103,15 @@ const PastVotesPage = () => {
         
         <PastVotesFullList 
           items={mockPastVotes} 
-          onItemClick={(item) => console.log("Past vote clicked:", item)} 
+          onItemClick={handleItemClick} 
         />
       </div>
+
+      <PastVoteDetailPanel 
+        item={selectedItem} 
+        isOpen={isPanelOpen} 
+        onClose={handleClosePanel} 
+      />
     </div>
   );
 };
