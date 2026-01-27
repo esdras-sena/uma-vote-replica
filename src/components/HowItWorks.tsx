@@ -3,12 +3,14 @@ import { useAccount } from "@starknet-react/core";
 import { getStakedAmount, getUmbraBalance, getOutstandingRewards } from "@/web3/getStakingInfo";
 import { getApr } from "@/web3/getApr";
 import { getVoteCount } from "@/web3/getVoteCount";
+import { StakeUnstakePanel } from "./StakeUnstakePanel";
 
 interface Step {
   number: number;
   title: string;
   description: ReactNode;
   action: string;
+  onAction?: () => void;
 }
 
 export const HowItWorks = () => {
@@ -18,6 +20,7 @@ export const HowItWorks = () => {
   const [apr, setApr] = useState<string>("0");
   const [voteCount, setVoteCount] = useState<number>(0);
   const [unclaimedRewards, setUnclaimedRewards] = useState<string>("0");
+  const [stakeModalOpen, setStakeModalOpen] = useState(false);
 
   useEffect(() => {
     // Fetch APR (doesn't need user address)
@@ -56,6 +59,7 @@ export const HowItWorks = () => {
       title: "Stake UMBRA",
       description: <>You are staking <span className="font-semibold">{stakedAmount}</span> of your <span className="font-semibold">{umbraBalance}</span> UMBRA tokens.</>,
       action: "Stake/Unstake",
+      onAction: () => setStakeModalOpen(true),
     },
     {
       number: 2,
@@ -72,30 +76,37 @@ export const HowItWorks = () => {
   ];
 
   return (
-    <div className="px-6 py-8 bg-background">
-      <h2 className="text-lg font-semibold text-foreground mb-4">How it works:</h2>
-      
-      <div className="border border-border rounded-lg overflow-hidden bg-card">
-        {steps.map((step, index) => (
-          <div 
-            key={step.number}
-            className={`flex items-center ${index !== steps.length - 1 ? "border-b border-border" : ""}`}
-          >
-            <div className="flex items-center gap-3 px-5 py-4 bg-secondary min-w-[180px]">
-              <div className="w-6 h-6 rounded-full bg-amber text-primary-foreground flex items-center justify-center text-xs font-medium">
-                {step.number}
+    <>
+      <div className="px-6 py-8 bg-background">
+        <h2 className="text-lg font-semibold text-foreground mb-4">How it works:</h2>
+        
+        <div className="border border-border rounded-lg overflow-hidden bg-card">
+          {steps.map((step, index) => (
+            <div 
+              key={step.number}
+              className={`flex items-center ${index !== steps.length - 1 ? "border-b border-border" : ""}`}
+            >
+              <div className="flex items-center gap-3 px-5 py-4 bg-secondary min-w-[180px]">
+                <div className="w-6 h-6 rounded-full bg-amber text-primary-foreground flex items-center justify-center text-xs font-medium">
+                  {step.number}
+                </div>
+                <span className="font-medium text-foreground">{step.title}</span>
               </div>
-              <span className="font-medium text-foreground">{step.title}</span>
+              <div className="flex-1 px-5 py-4 flex items-center justify-between">
+                <span className="text-muted-foreground">{step.description}</span>
+                <button 
+                  onClick={step.onAction}
+                  className="text-amber font-medium hover:underline text-sm"
+                >
+                  {step.action}
+                </button>
+              </div>
             </div>
-            <div className="flex-1 px-5 py-4 flex items-center justify-between">
-              <span className="text-muted-foreground">{step.description}</span>
-              <a href="#" className="text-amber font-medium hover:underline text-sm">
-                {step.action}
-              </a>
-            </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
-    </div>
+
+      <StakeUnstakePanel open={stakeModalOpen} onOpenChange={setStakeModalOpen} />
+    </>
   );
 };
