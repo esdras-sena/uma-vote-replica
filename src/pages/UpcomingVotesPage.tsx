@@ -1,6 +1,8 @@
+import { useState } from "react";
 import { Navigation } from "@/components/Navigation";
 import { UpcomingVotes, UpcomingVoteItem } from "@/components/UpcomingVotes";
 import { VotingRoundBanner } from "@/components/VotingRoundBanner";
+import { StakeUnstakePanel } from "@/components/StakeUnstakePanel";
 
 const mockUpcomingVotes: UpcomingVoteItem[] = [
   {
@@ -42,6 +44,8 @@ const mockUpcomingVotes: UpcomingVoteItem[] = [
 ];
 
 const UpcomingVotesPage = () => {
+  const [stakeModalOpen, setStakeModalOpen] = useState(false);
+
   return (
     <div className="min-h-screen bg-background">
       <Navigation activeTab="upcoming" />
@@ -51,6 +55,7 @@ const UpcomingVotesPage = () => {
           <VotingRoundBanner 
             timeLeft="1 day" 
             onRemindMe={() => console.log("Remind me clicked")} 
+            onStakeClick={() => setStakeModalOpen(true)}
           />
         </div>
         
@@ -66,6 +71,8 @@ const UpcomingVotesPage = () => {
           onItemClick={(item) => console.log("Upcoming vote clicked:", item)} 
         />
       </div>
+
+      <StakeUnstakePanel open={stakeModalOpen} onOpenChange={setStakeModalOpen} />
     </div>
   );
 };
