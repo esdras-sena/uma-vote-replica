@@ -40,28 +40,28 @@ export async function getVoteCount(userAddress: string): Promise<number> {
     const fromBlock = await getBlockNumberByTimestamp(hoursAgo48);
     const latestBlock = await provider.getBlockNumber();
     
-    // VoteCommitted is a nested event in Vote::Event enum, so keys structure is:
-    // [0]: Component hash (skip with [])
-    // [1]: Event selector hash  
-    // [2]: voter (key)
-    // [3]: caller (key)
-    // [4]: roundId low (key, u256)
-    // [5]: roundId high (key, u256)
-    // [6]: identifier (key)
+    // VoteCommitted is a nested event in Vote::Event enum
+    // Keys structure per starknet.js docs:
+    // - Each inner array = possible values for that key position (OR'd)
+    // - Empty array [] = skip/match any value for that position
+    // - For nested events, first position is component hash (skip with [])
+    //
+    // VoteCommitted keys: [component_hash, event_selector, voter, caller, roundId_low, roundId_high, identifier]
     
     const eventSelector = num.toHex(hash.starknetKeccak('VoteCommitted'));
     const voterKey = num.toHex(userAddress);
     const roundIdLow = num.toHex(currentRoundId);
     const roundIdHigh = num.toHex(0);
     
-    // Filter: skip component hash, match event selector, match voter, any caller, match roundId
+    // Build filter per starknet.js docs: [[pos0_values], [pos1_values], ...]
+    // Each position is an array of acceptable values (OR'd), empty = any
     const keyFilter = [
-      [],                 // [0] skip component hash
-      [eventSelector],    // [1] event selector
-      [voterKey],         // [2] voter
-      [],                 // [3] caller (any)
-      [roundIdLow],       // [4] roundId low
-      [roundIdHigh],      // [5] roundId high
+      [],                 // Position 0: component hash (skip/any)
+      [eventSelector],    // Position 1: event selector
+      [voterKey],         // Position 2: voter address
+      [],                 // Position 3: caller (any)
+      [roundIdLow],       // Position 4: roundId low part
+      [roundIdHigh],      // Position 5: roundId high part (0 for small numbers)
     ];
     
     let allEvents: any[] = [];
