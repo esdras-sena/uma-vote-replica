@@ -14,8 +14,8 @@ interface StakeUnstakePanelProps {
   onOpenChange: (open: boolean) => void;
 }
 
-const VOTE_CONTRACT = import.meta.env.VITE_VOTE_CONTRACT || "0x6975fc84224e0f89bc049ac24e0849cb099379487cf3e3d8c38ddafe62eb8e8";
-const UMBRA_CONTRACT = import.meta.env.VITE_UMBRA || "0x32d3cfeb9740cf36ae54d823ff193676f36fa99310c04ad0bc8df8bc5a2028e";
+const VOTE_CONTRACT = import.meta.env.VITE_VOTE_CONTRACT || "0x1cf58617e3b5844360ec31dcd73ec50a4240f2591f88a250bc457613bcfd678";
+const UMBRA_CONTRACT = import.meta.env.VITE_UMBRA || "0x6acfb04a42c6d312a2390cd968dcca357df4d9fd87e1949cccade879691d8ec";
 
 function parseDecimalToBigInt(value: string, decimals: number = 18): bigint {
   const cleanValue = value.trim();
