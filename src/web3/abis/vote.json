@@ -864,10 +864,6 @@
         "name": "get_round_id_to_vote_on_request",
         "inputs": [
           {
-            "name": "priceRequestId",
-            "type": "core::felt252"
-          },
-          {
             "name": "targetRoundId",
             "type": "core::integer::u32"
           }
@@ -1080,10 +1076,6 @@
         "name": "stake",
         "inputs": [
           {
-            "name": "priceRequestId",
-            "type": "core::felt252"
-          },
-          {
             "name": "amount",
             "type": "core::integer::u128"
           }
@@ -1095,10 +1087,6 @@
         "type": "function",
         "name": "stake_to",
         "inputs": [
-          {
-            "name": "priceRequestId",
-            "type": "core::felt252"
-          },
           {
             "name": "recipient",
             "type": "core::starknet::contract_address::ContractAddress"
