@@ -10,7 +10,7 @@ function getProvider() {
 export async function getCurrentRoundId(): Promise<number> {
   const provider = getProvider();
   const voteAddr = import.meta.env.VITE_VOTE_CONTRACT || "0x6975fc84224e0f89bc049ac24e0849cb099379487cf3e3d8c38ddafe62eb8e8";
-  
+
   try {
     const voteContract = new Contract({ abi: voteAbi, address: voteAddr, providerOrAccount: provider });
     const roundId = await voteContract.get_current_round_id();
@@ -23,34 +23,35 @@ export async function getCurrentRoundId(): Promise<number> {
 
 export async function getVoteCount(userAddress: string): Promise<number> {
   if (!userAddress) return 0;
-  
+
   const provider = getProvider();
   const voteAddr = import.meta.env.VITE_VOTE_CONTRACT || "0x6975fc84224e0f89bc049ac24e0849cb099379487cf3e3d8c38ddafe62eb8e8";
-  
+
   try {
     const currentRoundId = await getCurrentRoundId();
     if (currentRoundId === 0) return 0;
-    
+
     const now = Math.floor(Date.now() / 1000);
     const hoursAgo48 = now - (48 * 60 * 60);
-    
+
     const fromBlock = await getBlockNumberByTimestamp(hoursAgo48);
     const latestBlock = await provider.getBlockNumber();
-    
+
     const eventSelector = num.toHex(hash.starknetKeccak('VoteCommitted'));
     const voterKey = num.toHex(userAddress);
     const roundIdLow = num.toHex(currentRoundId);
     const roundIdHigh = num.toHex(0);
-    
+
     const keyFilter = [
-      [eventSelector],
-      [voterKey],
-      [],
-      [roundIdLow],
-      [roundIdHigh],
-      [],
+      [
+        voterKey,
+        null,
+        roundIdLow,
+        roundIdHigh,
+        null
+      ],
     ];
-    
+
     const [events] = await fetchEvents(fromBlock, latestBlock, voteAddr, keyFilter, 'VoteCommitted');
     return events.length;
   } catch (err) {
