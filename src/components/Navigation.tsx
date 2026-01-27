@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import eclipseIcon from "@/assets/eclipse-moon.svg";
+import eclipseIcon from "@/assets/eclipse-moon.png";
 import { Button } from "./ui/button";
 import { ConnectButton } from "./ConnectButton";
 
