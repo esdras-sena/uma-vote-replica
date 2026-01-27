@@ -4,6 +4,7 @@ import { getStakedAmount, getUmbraBalance, getOutstandingRewards } from "@/web3/
 import { getApr } from "@/web3/getApr";
 import { getVoteCount } from "@/web3/getVoteCount";
 import { StakeUnstakePanel } from "./StakeUnstakePanel";
+import { ClaimPanel } from "./ClaimPanel";
 
 interface Step {
   number: number;
@@ -21,6 +22,7 @@ export const HowItWorks = () => {
   const [voteCount, setVoteCount] = useState<number>(0);
   const [unclaimedRewards, setUnclaimedRewards] = useState<string>("0");
   const [stakeModalOpen, setStakeModalOpen] = useState(false);
+  const [claimModalOpen, setClaimModalOpen] = useState(false);
 
   useEffect(() => {
     // Fetch APR (doesn't need user address)
@@ -72,6 +74,7 @@ export const HowItWorks = () => {
       title: "Get rewards",
       description: <>Your unclaimed UMBRA rewards: <span className="font-semibold">{unclaimedRewards}</span></>,
       action: "Claim",
+      onAction: () => setClaimModalOpen(true),
     },
   ];
 
@@ -107,6 +110,7 @@ export const HowItWorks = () => {
       </div>
 
       <StakeUnstakePanel open={stakeModalOpen} onOpenChange={setStakeModalOpen} />
+      <ClaimPanel open={claimModalOpen} onOpenChange={setClaimModalOpen} claimableRewards={unclaimedRewards} />
     </>
   );
 };
