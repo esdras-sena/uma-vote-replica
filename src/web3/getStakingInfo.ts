@@ -32,18 +32,21 @@ export async function getStakedAmount(userAddress: string): Promise<string> {
     const abi = await loadAbi(voteAddr);
     const voteContract = new Contract({ abi, address: voteAddr, providerOrAccount: provider });
     const stakedAmount = await voteContract.voter_stakes(userAddress);
-    
-    // Handle u256 response (has low/high properties)
-    let rawAmount: bigint;
-    if (typeof stakedAmount === 'object' && stakedAmount !== null) {
-      if (stakedAmount.low !== undefined) {
-        rawAmount = BigInt(stakedAmount.low);
-      } else {
-        rawAmount = BigInt(stakedAmount.toString());
-      }
+
+    // voter_stakes returns VoterStake struct; stake is u128 (see vote ABI)
+    let stakeValue: unknown = 0;
+    if (typeof stakedAmount === "object" && stakedAmount !== null) {
+      const asAny = stakedAmount as any;
+      stakeValue = asAny.stake ?? asAny[0] ?? 0;
     } else {
-      rawAmount = BigInt(stakedAmount || 0);
+      stakeValue = stakedAmount ?? 0;
     }
+
+    let rawAmount: bigint;
+    if (typeof stakeValue === "bigint") rawAmount = stakeValue;
+    else if (typeof stakeValue === "number") rawAmount = BigInt(stakeValue);
+    else if (typeof stakeValue === "string") rawAmount = BigInt(stakeValue);
+    else rawAmount = 0n;
     
     return formatBigIntToDecimal(rawAmount);
   } catch (err) {

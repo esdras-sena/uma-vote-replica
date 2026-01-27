@@ -42,15 +42,9 @@ export async function getVoteCount(userAddress: string): Promise<number> {
     const roundIdLow = num.toHex(currentRoundId);
     const roundIdHigh = num.toHex(0);
 
-    const keyFilter = [
-      [
-        voterKey,
-        null,
-        roundIdLow,
-        roundIdHigh,
-        null
-      ],
-    ];
+    // keys filter must be arrays of hex strings (no nulls)
+    // VoteCommitted keys layout: [eventSelector, voter, <wildcards...>, roundId.low, roundId.high, ...]
+    const keyFilter = [[eventSelector], [voterKey], [], [roundIdLow], [roundIdHigh], []];
 
     const [events] = await fetchEvents(fromBlock, latestBlock, voteAddr, keyFilter, 'VoteCommitted');
     return events.length;

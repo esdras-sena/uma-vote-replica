@@ -38,6 +38,8 @@ function parseDecimalToBigInt(value: string, decimals: number = 18): bigint {
   return BigInt(combined);
 }
 
+const MAX_U128 = (2n ** 128n) - 1n;
+
 export const StakeUnstakePanel = ({ open, onOpenChange }: StakeUnstakePanelProps) => {
   const { address } = useAccount();
   const { sendAsync } = useSendTransaction({});
@@ -78,6 +80,17 @@ export const StakeUnstakePanel = ({ open, onOpenChange }: StakeUnstakePanelProps
     try {
       const rawAmount = parseDecimalToBigInt(amount);
 
+      if (rawAmount <= 0n) {
+        toast({ title: "Invalid amount", variant: "destructive" });
+        return;
+      }
+
+      // Vote contract ABI: stake(amount: u128)
+      if (rawAmount > MAX_U128) {
+        toast({ title: "Amount too large", description: "Amount must fit in u128", variant: "destructive" });
+        return;
+      }
+
       // Build multicall: approve + stake using CallData.compile and cairo.uint256
       const calls = [
         {
@@ -91,9 +104,8 @@ export const StakeUnstakePanel = ({ open, onOpenChange }: StakeUnstakePanelProps
         {
           contractAddress: VOTE_CONTRACT,
           entrypoint: "stake",
-          calldata: CallData.compile({
-            amount: cairo.uint256(rawAmount),
-          }),
+          // stake expects u128 (single felt)
+          calldata: CallData.compile({ amount: rawAmount }),
         },
       ];
 
@@ -122,13 +134,23 @@ export const StakeUnstakePanel = ({ open, onOpenChange }: StakeUnstakePanelProps
     try {
       const rawAmount = parseDecimalToBigInt(amount);
 
+      if (rawAmount <= 0n) {
+        toast({ title: "Invalid amount", variant: "destructive" });
+        return;
+      }
+
+      // Vote contract ABI: request_unstake(amount: u128)
+      if (rawAmount > MAX_U128) {
+        toast({ title: "Amount too large", description: "Amount must fit in u128", variant: "destructive" });
+        return;
+      }
+
       const calls = [
         {
           contractAddress: VOTE_CONTRACT,
           entrypoint: "request_unstake",
-          calldata: CallData.compile({
-            amount: cairo.uint256(rawAmount),
-          }),
+          // request_unstake expects u128 (single felt)
+          calldata: CallData.compile({ amount: rawAmount }),
         },
       ];
 
