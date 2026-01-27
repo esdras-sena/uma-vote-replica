@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { ChevronRight } from "lucide-react";
 import {
   Select,
@@ -6,6 +7,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Button } from "@/components/ui/button";
 
 export interface VoteItem {
   id: string;
@@ -22,6 +24,23 @@ interface VoteTableProps {
 }
 
 export const VoteTable = ({ items, onItemClick }: VoteTableProps) => {
+  const [votes, setVotes] = useState<Record<string, string>>({});
+
+  const handleVoteChange = (itemId: string, value: string) => {
+    setVotes(prev => ({
+      ...prev,
+      [itemId]: value
+    }));
+  };
+
+  const votedCount = Object.keys(votes).length;
+  const totalCount = items.length;
+
+  const handleCommitVotes = () => {
+    console.log("Committing votes:", votes);
+    // TODO: Implement actual commit logic
+  };
+
   return (
     <div>
       {/* Table Header */}
@@ -50,8 +69,14 @@ export const VoteTable = ({ items, onItemClick }: VoteTableProps) => {
               </div>
             </div>
             
-            <Select>
-              <SelectTrigger className="bg-secondary border-border">
+            <Select 
+              value={votes[item.id] || ""} 
+              onValueChange={(value) => handleVoteChange(item.id, value)}
+            >
+              <SelectTrigger 
+                className="bg-secondary border-border"
+                onClick={(e) => e.stopPropagation()}
+              >
                 <SelectValue placeholder="Choose answer" />
               </SelectTrigger>
               <SelectContent>
@@ -69,6 +94,18 @@ export const VoteTable = ({ items, onItemClick }: VoteTableProps) => {
           </div>
         ))}
       </div>
+
+      {/* Commit Vote Button */}
+      {votedCount > 0 && (
+        <div className="px-4 py-4 border-t border-border">
+          <Button 
+            onClick={handleCommitVotes}
+            className="bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-2"
+          >
+            Commit {votedCount}/{totalCount} Votes
+          </Button>
+        </div>
+      )}
     </div>
   );
 };
