@@ -44,6 +44,9 @@ export const HowItWorks = () => {
     }
   }, [address]);
 
+  // Voter APR is 0 if they haven't voted
+  const voterApr = voteCount === 0 ? "0" : apr;
+
   const steps: Step[] = [
     {
       number: 1,
@@ -54,7 +57,7 @@ export const HowItWorks = () => {
     {
       number: 2,
       title: "Vote",
-      description: <>You have voted in <span className="font-semibold">{voteCount}</span> votes, and are earning <span className="font-semibold">{apr}% APR</span>.</>,
+      description: <>You have voted in <span className="font-semibold">{voteCount}</span> votes, and are earning <span className="font-semibold">{voterApr}% APR</span>.</>,
       action: "Vote history",
     },
     {
