@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import eclipseIcon from "@/assets/eclipse-icon.png";
+import eclipseIcon from "@/assets/eclipse-moon.svg";
 import { Button } from "./ui/button";
 import { ConnectButton } from "./ConnectButton";
 
@@ -18,7 +18,7 @@ export const Navigation = ({ activeTab = "votes" }: NavigationProps) => {
   return (
     <header className="flex items-center justify-between px-6 py-4 bg-background border-b border-border">
       <div className="flex items-center gap-3">
-        <img src={eclipseIcon} alt="Eclipse" className="w-12 h-12" />
+        <img src={eclipseIcon} alt="Eclipse" className="w-8 h-8" />
         <div className="flex items-center gap-2">
           <span className="text-2xl font-bold tracking-tight text-amber">ECLIPSE</span>
           <span className="text-sm text-muted-foreground font-medium">VOTING</span>
