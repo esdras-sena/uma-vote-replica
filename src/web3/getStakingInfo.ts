@@ -26,7 +26,7 @@ function formatBigIntToDecimal(rawAmount: bigint, decimals: number = 18): string
 export async function getStakedAmount(userAddress: string): Promise<string> {
   if (!userAddress) return "0";
   
-  const voteAddr = import.meta.env.VITE_VOTE_CONTRACT || "0x6975fc84224e0f89bc049ac24e0849cb099379487cf3e3d8c38ddafe62eb8e8";
+  const voteAddr = import.meta.env.VITE_VOTE_CONTRACT || "0x1cf58617e3b5844360ec31dcd73ec50a4240f2591f88a250bc457613bcfd678";
   
   try {
     const abi = await loadAbi(voteAddr);
@@ -58,7 +58,7 @@ export async function getStakedAmount(userAddress: string): Promise<string> {
 export async function getUmbraBalance(userAddress: string): Promise<string> {
   if (!userAddress) return "0";
   
-  const umbraAddr = import.meta.env.VITE_UMBRA || "0x32d3cfeb9740cf36ae54d823ff193676f36fa99310c04ad0bc8df8bc5a2028e";
+  const umbraAddr = import.meta.env.VITE_UMBRA || "0x6acfb04a42c6d312a2390cd968dcca357df4d9fd87e1949cccade879691d8ec";
   
   try {
     const abi = await loadAbi(umbraAddr);
@@ -89,7 +89,7 @@ export async function getUmbraBalance(userAddress: string): Promise<string> {
 export async function getOutstandingRewards(userAddress: string): Promise<string> {
   if (!userAddress) return "0";
   
-  const voteAddr = import.meta.env.VITE_VOTE_CONTRACT || "0x6975fc84224e0f89bc049ac24e0849cb099379487cf3e3d8c38ddafe62eb8e8";
+  const voteAddr = import.meta.env.VITE_VOTE_CONTRACT || "0x1cf58617e3b5844360ec31dcd73ec50a4240f2591f88a250bc457613bcfd678";
   
   try {
     const abi = await loadAbi(voteAddr);

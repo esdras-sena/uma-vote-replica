@@ -9,7 +9,7 @@ function getProvider() {
 
 export async function getCurrentRoundId(): Promise<number> {
   const provider = getProvider();
-  const voteAddr = import.meta.env.VITE_VOTE_CONTRACT || "0x6975fc84224e0f89bc049ac24e0849cb099379487cf3e3d8c38ddafe62eb8e8";
+  const voteAddr = import.meta.env.VITE_VOTE_CONTRACT || "0x1cf58617e3b5844360ec31dcd73ec50a4240f2591f88a250bc457613bcfd678";
 
   try {
     const voteContract = new Contract({ abi: voteAbi, address: voteAddr, providerOrAccount: provider });
@@ -25,7 +25,7 @@ export async function getVoteCount(userAddress: string): Promise<number> {
   if (!userAddress) return 0;
 
   const provider = getProvider();
-  const voteAddr = import.meta.env.VITE_VOTE_CONTRACT || "0x6975fc84224e0f89bc049ac24e0849cb099379487cf3e3d8c38ddafe62eb8e8";
+  const voteAddr = import.meta.env.VITE_VOTE_CONTRACT || "0x1cf58617e3b5844360ec31dcd73ec50a4240f2591f88a250bc457613bcfd678";
 
   try {
     const currentRoundId = await getCurrentRoundId();
