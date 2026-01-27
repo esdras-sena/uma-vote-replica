@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import { useAccount, useSendTransaction } from "@starknet-react/core";
-import { Contract, uint256 } from "starknet";
+import { Contract } from "starknet";
 import { X } from "lucide-react";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogClose } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -19,10 +19,10 @@ interface StakeUnstakePanelProps {
 const VOTE_CONTRACT = import.meta.env.VITE_VOTE_CONTRACT || "0x6975fc84224e0f89bc049ac24e0849cb099379487cf3e3d8c38ddafe62eb8e8";
 const UMBRA_CONTRACT = import.meta.env.VITE_UMBRA || "0x32d3cfeb9740cf36ae54d823ff193676f36fa99310c04ad0bc8df8bc5a2028e";
 
-function parseDecimalToU256(value: string, decimals: number = 18): { low: bigint; high: bigint } {
+function parseDecimalToBigInt(value: string, decimals: number = 18): bigint {
   const cleanValue = value.trim();
   if (!cleanValue || cleanValue === "0") {
-    return { low: 0n, high: 0n };
+    return 0n;
   }
 
   const parts = cleanValue.split(".");
@@ -37,14 +37,7 @@ function parseDecimalToU256(value: string, decimals: number = 18): { low: bigint
   }
   
   const combined = integerPart + fractionalPart;
-  const rawAmount = BigInt(combined);
-  
-  // Split into low and high for u256
-  const MAX_U128 = 2n ** 128n;
-  return {
-    low: rawAmount % MAX_U128,
-    high: rawAmount / MAX_U128,
-  };
+  return BigInt(combined);
 }
 
 export const StakeUnstakePanel = ({ open, onOpenChange }: StakeUnstakePanelProps) => {
@@ -85,7 +78,7 @@ export const StakeUnstakePanel = ({ open, onOpenChange }: StakeUnstakePanelProps
 
     setIsLoading(true);
     try {
-      const amountU256 = parseDecimalToU256(amount);
+      const rawAmount = parseDecimalToBigInt(amount);
       
       // Load ABIs
       const [umbraAbi, voteAbi] = await Promise.all([
@@ -97,9 +90,9 @@ export const StakeUnstakePanel = ({ open, onOpenChange }: StakeUnstakePanelProps
       const umbraContract = new Contract({ abi: umbraAbi, address: UMBRA_CONTRACT });
       const voteContract = new Contract({ abi: voteAbi, address: VOTE_CONTRACT });
 
-      // Build multicall: approve + stake
-      const approveCall = umbraContract.populate("approve", [VOTE_CONTRACT, uint256.bnToUint256(amountU256.low + (amountU256.high << 128n))]);
-      const stakeCall = voteContract.populate("stake", [uint256.bnToUint256(amountU256.low + (amountU256.high << 128n))]);
+      // Build multicall: approve + stake (pass raw bigint, starknet.js handles u256 conversion)
+      const approveCall = umbraContract.populate("approve", [VOTE_CONTRACT, rawAmount]);
+      const stakeCall = voteContract.populate("stake", [rawAmount]);
 
       // Execute multicall
       await sendAsync([approveCall, stakeCall]);
@@ -124,12 +117,12 @@ export const StakeUnstakePanel = ({ open, onOpenChange }: StakeUnstakePanelProps
 
     setIsLoading(true);
     try {
-      const amountU256 = parseDecimalToU256(amount);
+      const rawAmount = parseDecimalToBigInt(amount);
       
       const voteAbi = await loadAbi(VOTE_CONTRACT);
       const voteContract = new Contract({ abi: voteAbi, address: VOTE_CONTRACT });
 
-      const unstakeCall = voteContract.populate("request_unstake", [uint256.bnToUint256(amountU256.low + (amountU256.high << 128n))]);
+      const unstakeCall = voteContract.populate("request_unstake", [rawAmount]);
 
       await sendAsync([unstakeCall]);
 
@@ -152,6 +145,7 @@ export const StakeUnstakePanel = ({ open, onOpenChange }: StakeUnstakePanelProps
       <DialogContent className="sm:max-w-[500px] p-0 gap-0 overflow-hidden">
         <DialogHeader className="p-4 pb-0">
           <DialogTitle className="text-lg font-semibold">Stake / Unstake</DialogTitle>
+          <DialogDescription className="sr-only">Stake or unstake your UMBRA tokens</DialogDescription>
         </DialogHeader>
         
         {/* Balance Banner */}
